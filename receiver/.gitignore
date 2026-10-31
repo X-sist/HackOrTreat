@@ -1,0 +1,19 @@
+# Component-local state for receiver (@Xsist)
+.venv/
+node_modules/
+__pycache__/
+*.py[cod]
+.local/
+config.local.json
+.env
+.env.*
+!*.env.example
+
+# Audio artifacts and local cache
+models/
+audio/.venv/
+audio/output/
+*.wav
+*.mp3
+*.onnx
+*.onnx.json
