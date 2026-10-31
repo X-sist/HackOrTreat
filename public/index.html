@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beyond The Grave — The Spirit Plane</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="screen-overlay" id="glitchOverlay"></div>
+
+  <header class="hud-bar">
+    <div class="hud-item system-title">
+      <span class="rune">&#9760;</span> BEYOND THE GRAVE <span class="subtext">/ The Spirit Plane</span>
+    </div>
+    <div class="hud-status-group">
+      <div class="hud-pill" id="serialPill">
+        <span class="indicator-dot dot-yellow"></span>
+        <span id="serialStatusText">Arduino: Simulation</span>
+      </div>
+      <div class="hud-pill" id="aetherPill">
+        <span class="indicator-dot dot-green"></span>
+        <span id="aetherStatusText">Aether: Stable</span>
+      </div>
+      <div class="hud-pill">
+        <span class="indicator-dot dot-cyan"></span>
+        <span>Wi-Fi: Severed (Offline)</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Disturbance Warning Banner -->
+  <div class="disturbance-banner" id="disturbanceBanner">
+    &#9888; CHECKSUM_FAILED: AETHER DISTURBED &#9888;
+    <div class="disturbance-sub">A mortal has broken the optical infrared beam.</div>
+  </div>
+
+  <main class="board-container">
+    <!-- The Ouija Board Surface with solid aged woody / slate finish -->
+    <div class="ouija-board" id="ouijaBoard">
+      
+      <div class="board-corners corner-tl">&#10022;</div>
+      <div class="board-corners corner-tr">&#10022;</div>
+      <div class="board-corners corner-bl">&#10022;</div>
+      <div class="board-corners corner-br">&#10022;</div>
+
+      <!-- Top Affirmation Zone -->
+      <div class="board-header">
+        <div class="oracle-opt" id="target-YES">
+          <span class="symbol">&#9788;</span>
+          <span class="text">YES</span>
+        </div>
+        <div class="board-title-crest">
+          <span class="mystic-crest">MYSTIC REALM</span>
+          <span class="latin-sub">COMMUNICATIO OMNIS MORTIS</span>
+        </div>
+        <div class="oracle-opt" id="target-NO">
+          <span class="symbol">&#9790;</span>
+          <span class="text">NO</span>
+        </div>
+      </div>
+
+      <!-- Alphabet Letter Arcs -->
+      <div class="alphabet-arc arc-top" id="arcTop">
+        <!-- A-M injected via JS with position metadata -->
+      </div>
+
+      <div class="alphabet-arc arc-bottom" id="arcBottom">
+        <!-- N-Z injected via JS with position metadata -->
+      </div>
+
+      <!-- Numbers Row -->
+      <div class="numbers-row" id="numbersRow">
+        <!-- 1-0 injected via JS -->
+      </div>
+
+      <!-- Goodbye Area -->
+      <div class="goodbye-container" id="target-GOODBYE">
+        <span>GOOD BYE</span>
+      </div>
+
+      <!-- Movable Planchette -->
+      <div class="planchette" id="planchette">
+        <div class="planchette-body">
+          <div class="lens-window">
+            <div class="reticle"></div>
+          </div>
+          <div class="planchette-pointer">&#9650;</div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Spirit Transcription Terminal & Simulation Controls -->
+  <footer class="console-panel">
+    <div class="console-box">
+      <div class="console-header">
+        <span class="console-label">TRANSCRIPTION OF THE UNSEEN</span>
+        <span class="spirit-speaker" id="currentLetterDisplay">Planchette Resting</span>
+      </div>
+      <div class="spirit-log" id="spiritLog">
+        <div class="log-entry system">[SYSTEM INITIALIZED] Standing by for incoming optical IR signals from Arduino...</div>
+      </div>
+    </div>
+
+    <!-- Quick Hackathon Simulation Controls for testing before Arduino is plugged in -->
+    <aside class="simulation-controls">
+      <div class="sim-header">SIMULATION BENCH (Laptop 2 Controls)</div>
+      <div class="sim-buttons">
+        <button class="sim-btn" onclick="triggerSimulation('Spirit, what is your name?', false)">
+          &#128172; Ask: "What is your name?"
+        </button>
+        <button class="sim-btn" onclick="triggerSimulation('Are we alone in this room?', false)">
+          &#128172; Ask: "Are we alone?"
+        </button>
+        <button class="sim-btn btn-danger" onclick="triggerSimulation('w*t is y@ur n%me', true)">
+          &#9888; Simulate Beam Disturbance
+        </button>
+        <button class="sim-btn btn-reset" onclick="resetPlanchette()">
+          &#8634; Center Planchette
+        </button>
+      </div>
+    </aside>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

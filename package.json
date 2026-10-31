@@ -1,0 +1,27 @@
+{
+  "name": "beyond-the-grave",
+  "version": "0.1.0",
+  "description": "BeyondTheGrave - The Spirit Plane (Laptop 2 Output Interface for IR-linked Ouija performance)",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "ouija",
+    "hackathon",
+    "serialport",
+    "ollama",
+    "qwen",
+    "piper-tts"
+  ],
+  "author": "BeyondTheGrave Team",
+  "license": "ISC",
+  "dependencies": {
+    "@serialport/parser-readline": "^12.0.0",
+    "dotenv": "^16.4.5",
+    "serialport": "^12.0.0"
+  },
+  "devDependencies": {}
+}

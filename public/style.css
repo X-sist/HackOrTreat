@@ -1,0 +1,520 @@
+/* ==========================================================================
+   BEYOND THE GRAVE — STYLESHEET
+   Aesthetic: Weathered Mahogany Wood / Charcoal Slate Stone Ouija Board
+   ========================================================================== */
+
+:root {
+  --wood-bg-deep: #160e0a;
+  --wood-board-base: #281a13;
+  --wood-grain-highlight: #3b281d;
+  --wood-border: #4d3627;
+  --brass-gold: #c9a65f;
+  --brass-dark: #7a5e2d;
+  --chalk-text: #ded6c8;
+  --chalk-dim: #9b9080;
+  --aether-green: #38ef7d;
+  --warning-red: #ff3344;
+  --spirit-cyan: #00d2ff;
+  --planchette-wood: #442a1b;
+  --planchette-rim: #6e482f;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--wood-bg-deep);
+  /* Solid weathered woody background with subtle slate overlay */
+  background-image: 
+    radial-gradient(ellipse at center, rgba(59, 40, 29, 0.4) 0%, rgba(14, 9, 6, 0.95) 100%),
+    repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.05) 0px, rgba(0, 0, 0, 0.05) 2px, transparent 2px, transparent 8px);
+  color: var(--chalk-text);
+  font-family: 'Georgia', 'Palatino Linotype', 'Times New Roman', serif;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* Screen disturbance glitch flash */
+.screen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.screen-overlay.disturbed {
+  opacity: 1;
+  background: radial-gradient(circle, rgba(255, 30, 30, 0.25) 0%, rgba(100, 0, 0, 0.6) 100%);
+  animation: glitch-stutter 0.25s infinite;
+}
+
+@keyframes glitch-stutter {
+  0% { transform: translate(0, 0); filter: hue-rotate(0deg); }
+  25% { transform: translate(-3px, 2px); filter: contrast(150%); }
+  50% { transform: translate(3px, -2px); filter: invert(20%); }
+  75% { transform: translate(-2px, -1px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Top HUD */
+.hud-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 24px;
+  background: rgba(18, 12, 8, 0.85);
+  border-bottom: 1px solid var(--wood-border);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+  z-index: 10;
+}
+
+.system-title {
+  font-size: 1.15rem;
+  letter-spacing: 3px;
+  color: var(--brass-gold);
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.system-title .subtext {
+  font-size: 0.8rem;
+  color: var(--chalk-dim);
+  font-weight: normal;
+}
+
+.hud-status-group {
+  display: flex;
+  gap: 12px;
+}
+
+.hud-pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(30, 20, 15, 0.8);
+  border: 1px solid var(--wood-border);
+  padding: 4px 12px;
+  border-radius: 14px;
+  font-size: 0.8rem;
+  color: var(--chalk-text);
+  letter-spacing: 0.5px;
+}
+
+.indicator-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-green { background-color: var(--aether-green); box-shadow: 0 0 8px var(--aether-green); }
+.dot-yellow { background-color: #ffd000; box-shadow: 0 0 8px #ffd000; }
+.dot-cyan { background-color: var(--spirit-cyan); box-shadow: 0 0 8px var(--spirit-cyan); }
+.dot-red { background-color: var(--warning-red); box-shadow: 0 0 8px var(--warning-red); }
+
+/* Disturbance Banner */
+.disturbance-banner {
+  display: none;
+  background: linear-gradient(90deg, #600 0%, #a00 50%, #600 100%);
+  color: #fff;
+  text-align: center;
+  padding: 8px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  letter-spacing: 3px;
+  border-bottom: 2px solid var(--warning-red);
+  box-shadow: 0 0 25px rgba(255, 0, 0, 0.7);
+  animation: banner-pulse 0.8s infinite alternate;
+  z-index: 20;
+}
+
+.disturbance-banner.active {
+  display: block;
+}
+
+.disturbance-sub {
+  font-size: 0.8rem;
+  font-weight: normal;
+  letter-spacing: 1px;
+  opacity: 0.9;
+  margin-top: 2px;
+}
+
+@keyframes banner-pulse {
+  from { opacity: 0.85; }
+  to { opacity: 1; }
+}
+
+/* Board Center Container */
+.board-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+}
+
+/* The Ouija Board Tablet */
+.ouija-board {
+  position: relative;
+  width: 920px;
+  height: 480px;
+  background: 
+    radial-gradient(circle at center, #352319 0%, #20130d 80%, #150b07 100%);
+  border: 10px solid #4a3424;
+  outline: 2px solid var(--brass-gold);
+  border-radius: 20px;
+  box-shadow: 
+    inset 0 0 80px rgba(0, 0, 0, 0.9),
+    0 15px 40px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 25px 40px;
+}
+
+/* Corner filigree accents */
+.board-corners {
+  position: absolute;
+  font-size: 1.5rem;
+  color: var(--brass-gold);
+  opacity: 0.6;
+}
+.corner-tl { top: 12px; left: 16px; }
+.corner-tr { top: 12px; right: 16px; }
+.corner-bl { bottom: 12px; left: 16px; }
+.corner-br { bottom: 12px; right: 16px; }
+
+/* Top YES / Crest / NO */
+.board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.oracle-opt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 18px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  color: var(--chalk-text);
+}
+
+.oracle-opt .symbol {
+  font-size: 1.8rem;
+  color: var(--brass-gold);
+}
+
+.oracle-opt .text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.oracle-opt.highlight {
+  color: #fff;
+  text-shadow: 0 0 15px var(--brass-gold);
+  transform: scale(1.1);
+}
+
+.board-title-crest {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.mystic-crest {
+  font-size: 1.4rem;
+  font-weight: bold;
+  letter-spacing: 6px;
+  color: var(--brass-gold);
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+}
+
+.latin-sub {
+  font-size: 0.68rem;
+  letter-spacing: 3px;
+  color: var(--chalk-dim);
+  font-style: italic;
+  margin-top: 2px;
+}
+
+/* Alphabet Arc Styles */
+.alphabet-arc {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.arc-top {
+  margin-top: 5px;
+  padding: 0 10px;
+}
+
+.arc-bottom {
+  margin-top: 5px;
+  padding: 0 25px;
+}
+
+.board-letter {
+  font-size: 1.7rem;
+  font-weight: bold;
+  color: var(--chalk-text);
+  letter-spacing: 1px;
+  transition: color 0.3s ease, transform 0.3s ease;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  display: inline-block;
+  padding: 4px 6px;
+}
+
+.board-letter.active {
+  color: #fff;
+  text-shadow: 0 0 12px var(--brass-gold), 0 0 20px #fffae6;
+  transform: scale(1.25);
+}
+
+/* Numbers Row */
+.numbers-row {
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+  margin-top: 10px;
+}
+
+.board-num {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--chalk-dim);
+  transition: all 0.3s ease;
+}
+
+.board-num.active {
+  color: #fff;
+  text-shadow: 0 0 12px var(--brass-gold);
+  transform: scale(1.2);
+}
+
+/* Goodbye */
+.goodbye-container {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 1.6rem;
+  letter-spacing: 8px;
+  color: var(--brass-gold);
+  font-weight: bold;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
+  transition: all 0.3s ease;
+}
+
+.goodbye-container.active {
+  color: #fff;
+  text-shadow: 0 0 20px var(--brass-gold);
+  transform: scale(1.1);
+}
+
+/* ==========================================================================
+   Planchette (Movable Heart-Shaped Instrument with Center Lens)
+   ========================================================================== */
+.planchette {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 90px;
+  height: 110px;
+  pointer-events: none;
+  z-index: 50;
+  /* Smooth CSS transition for hackathon string-based spelling */
+  transition: transform 0.65s cubic-bezier(0.2, 0.9, 0.3, 1);
+  will-change: transform;
+}
+
+.planchette-body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 30%, #5a3924 0%, var(--planchette-wood) 70%, #2a160c 100%);
+  border: 3px solid var(--brass-gold);
+  border-radius: 45px 45px 15px 15px;
+  clip-path: polygon(50% 0%, 100% 35%, 85% 100%, 15% 100%, 0% 35%);
+  box-shadow: 
+    0 10px 25px rgba(0, 0, 0, 0.9),
+    inset 0 0 15px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.lens-window {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(220, 245, 255, 0.2);
+  border: 2px solid var(--brass-gold);
+  box-shadow: 
+    inset 0 0 8px rgba(255, 255, 255, 0.5),
+    0 0 10px rgba(0, 210, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.reticle {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.9);
+}
+
+.planchette-pointer {
+  position: absolute;
+  top: 4px;
+  font-size: 0.75rem;
+  color: var(--brass-gold);
+  opacity: 0.8;
+}
+
+/* ==========================================================================
+   Console Footer & Simulation Bench
+   ========================================================================== */
+.console-panel {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 16px;
+  padding: 12px 24px;
+  background: rgba(14, 9, 6, 0.92);
+  border-top: 1px solid var(--wood-border);
+  height: 165px;
+}
+
+.console-box {
+  display: flex;
+  flex-direction: column;
+  background: rgba(8, 5, 3, 0.85);
+  border: 1px solid var(--wood-border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  overflow: hidden;
+}
+
+.console-header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 4px;
+  margin-bottom: 6px;
+}
+
+.console-label {
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  color: var(--brass-gold);
+  font-weight: bold;
+}
+
+.spirit-speaker {
+  font-size: 0.8rem;
+  color: var(--spirit-cyan);
+  font-style: italic;
+}
+
+.spirit-log {
+  flex: 1;
+  overflow-y: auto;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 0.82rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.log-entry {
+  line-height: 1.35;
+  color: var(--chalk-text);
+}
+
+.log-entry.system { color: #8a8070; }
+.log-entry.incoming { color: var(--spirit-cyan); font-weight: bold; }
+.log-entry.spirit { color: #ffebaa; font-weight: bold; }
+.log-entry.disturbed { color: var(--warning-red); font-weight: bold; background: rgba(255, 0, 0, 0.1); padding: 2px 4px; border-radius: 4px; }
+
+/* Simulation Bench Controls */
+.simulation-controls {
+  display: flex;
+  flex-direction: column;
+  background: rgba(22, 14, 10, 0.85);
+  border: 1px solid var(--wood-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.sim-header {
+  font-size: 0.72rem;
+  letter-spacing: 1.5px;
+  color: var(--brass-gold);
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.sim-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.sim-btn {
+  background: #2a1c14;
+  color: var(--chalk-text);
+  border: 1px solid var(--wood-border);
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 0.74rem;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.sim-btn:hover {
+  background: #3d281c;
+  border-color: var(--brass-gold);
+  color: #fff;
+}
+
+.sim-btn.btn-danger {
+  grid-column: span 2;
+  background: rgba(120, 20, 20, 0.6);
+  border-color: #882222;
+  color: #ffcccc;
+  font-weight: bold;
+}
+
+.sim-btn.btn-danger:hover {
+  background: rgba(180, 25, 25, 0.9);
+  border-color: var(--warning-red);
+}
+
+.sim-btn.btn-reset {
+  grid-column: span 2;
+  text-align: center;
+  background: rgba(40, 30, 25, 0.7);
+  color: var(--chalk-dim);
+}

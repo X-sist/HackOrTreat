@@ -1,0 +1,52 @@
+The final demo plays out like a theatrical performance for the judges. You establish that Wi-Fi is completely disabled on both machines. You speak into Laptop 1: *"Spirit, what is your name?"* The laptop screen shows the transcribed text, and immediately, the Arduino next to it begins flashing an invisible IR sequence across the table.
+
+On the receiving end, the second Arduino catches the pulses. A judge walks between the boards, breaking the beam. The UI on Laptop 2 stutters, flashing a `CHECKSUM_FAILED: AETHER DISTURBED` warning. A second later, the Qwen model processes the corrupted packet and the disturbance flag. An offline, heavily distorted voice booms from the speakers: *"The living disrupt us. I am... trapped."* Simultaneously, on the screen, a digital planchette slides across a rusted Ouija board to spell out the words.
+
+Here is your exact blueprint to build this in six hours.
+
+### 1. The Pre-Hackathon Bill of Materials
+
+**Hardware:**
+
+* **2 Laptops (i5-1334U, 32GB RAM):** Fully charged.
+* **2 Arduino Microcontrollers:** With USB data cables.
+* **1 IR Transmitter (38kHz LED) & 1 IR Receiver (e.g., TSOP38238):** Plus jumper wires and breadboards.
+* **Physical Prop:** A bedsheet, plastic hand, or thick cardboard to act as the "geist" disrupting the beam.
+
+**Software (CRITICAL: Must be downloaded *tonight* while you have internet):**
+
+* **Models:** Qwen 2.5 1.5B or 3B (q4_K_M) downloaded via Ollama.
+* **Speech-to-Text:** `faster-whisper` or `whisper.cpp` Python libraries and the `tiny.en` model weights.
+* **Text-to-Speech:** Piper TTS binaries/Python package and a deep/raspy voice model file (`.onnx`). Spotify’s `pedalboard` Python library for the audio effects.
+* **Libraries:** Node.js, the `serialport` npm package, Arduino IDE with the `IRremote` library installed.
+* **Assets:** High-res Ouija board background image, transparent planchette PNG, and an ambient drone `.mp3` for background noise.
+
+### 2. Task Delegation (6-Hour Sprint)
+
+| Role | Domain | Primary 6-Hour Objectives |
+| --- | --- | --- |
+| **CE Major** | **The Physical Layer (Arduino & IR)** | 1. Wire the IR Tx to Board A and Rx to Board B.<br>
+
+<br>2. Write the Tx script to read Serial strings, wrap them in a packet (`[START][TEXT][CHECKSUM][END]`), and pulse the LED.<br>
+
+<br>3. Write the Rx script to decode pulses, calculate checksums, and push `<AETHER_DISTURBED>` over Serial if the payload drops. |
+| **CS Major 1** | **The Living Plane (Laptop 1 Input)** | 1. Implement offline Mic-to-Text using Whisper.<br>
+
+<br>2. Build a simple Python CLI interface displaying the recognized text.<br>
+
+<br>3. Write the Python Serial-out function that pushes the cleaned, compressed text string to the transmitting Arduino. |
+| **CS Major 2** | **The Spirit Plane (Laptop 2 Output)** | 1. Set up Node.js with `serialport` to listen to the receiving Arduino.<br>
+
+<br>2. Route incoming text/disturbance flags to local Ollama API (Qwen 1.5B/3B).<br>
+
+<br>3. Route Qwen's response text to Piper TTS + Pedalboard for spooky playback.<br>
+
+<br>4. Build the HTML/CSS/JS frontend moving the planchette via CSS transforms based on the string. |
+
+### 3. Friction Points & 6-Hour Survival Rules
+
+* **The Serial Baud Rate Bottleneck:** Arduino Serial communication and IR transmission operate at vastly different speeds. Ensure both Arduinos are set to a fast baud rate (e.g., `115200`), but make sure the Python/Node scripts actually wait for a newline character (`\n`) before processing. Do not flood the Arduino buffer from Laptop 1 faster than the IR LED can physically flash.
+* **IR Ambient Noise:** Hackathon venues have terrible fluorescent lighting that can sometimes emit noise in the 38kHz range. The CE major must use a tightly rolled piece of paper or a 3D-printed shroud over the IR receiver to act as a physical bandpass filter, ensuring it only sees the direct beam from your transmitter.
+* **The "Local Offline" Trap:** The moment you turn off Wi-Fi, APIs fail. Python libraries like `transformers` or `whisper` often try to ping HuggingFace to check for model updates, which will crash your script if it hangs on a network timeout. You must explicitly set environment variables (like `HF_HUB_OFFLINE=1`) tonight and run the full pipeline once completely disconnected from the internet to ensure weights are reading from the local disk cache.
+* **Model Hallucination on Garbage Data:** When the IR beam is broken, the receiving Arduino might pass corrupted junk characters (e.g., `wh*t is y@ur n%me`) to the LLM. You must use a robust system prompt in Ollama commanding Qwen to ignore special characters, deduce the core intent, and prioritize reacting to the `<AETHER_DISTURBED>` tag if present in the string.
+* **TTS Concurrency:** Piper TTS takes a moment to generate the audio file before playing it. Have your Node backend trigger the planchette animation to start spelling out the words visually *while* the audio is generating in the background to mask the latency.
