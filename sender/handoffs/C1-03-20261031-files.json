@@ -1,0 +1,76 @@
+{
+  "task": "C1-03",
+  "head": "1f568203870a92f3998625f80d2ed319f26010c9",
+  "existing_files_changed": {
+    "sender/SETUP.md": {
+      "before_sha256": "28697097c24fa6157374ec6ba93f1b4700b8334120a3cac75bccaeec3fb3e494",
+      "after_sha256": "326ae62ce3af17a7977651cdcc0b645d28eb129b48db98285f326c22ccf28aab"
+    },
+    "sender/dependencies.json": {
+      "before_sha256": "aea79ed00348ab34d95d160040bf6a399a1336f4290f6ec25b0fe973e3a3d307",
+      "after_sha256": "7c54b5c3de963e0c91393f2f8ce15c4ac496b49f3af42fdf1f86a245c2ebc8b6"
+    },
+    "sender/prepare_runtime.py": {
+      "before_sha256": "9c7047688f1b723283430d107e55b76fd71b7bd2d4e76ffec45fb7c4398ee5bd",
+      "after_sha256": "e3440b44e3ad1d1aeb51369ca9592a0d6122b546b8b2cfb07123414b4a1b196e"
+    },
+    "sender/verify.py": {
+      "before_sha256": "4384d656a745fe85b2a52bb83b0ea479ae59f33346c2cca3710222fcfe85c66b",
+      "after_sha256": "9e5b089c532ba5601aae996c4f4683cefed1fb8565d333fdac9db49419318d19"
+    },
+    "sender/README.md": {
+      "before_sha256": "03634275cd8b36260230a6f8d4ef0f4034c5b63764c67d37885bb0f1d486f738",
+      "after_sha256": "7f5e3f1b8f52cd75e308c25c29111323904e519b340c018b3064733fe2e4d034"
+    },
+    "sender/TASKS.md": {
+      "before_sha256": "118b29622f0da3042af38d7df6cb10a38397311551739762b629ff05fc6e8c09",
+      "after_sha256": "fce9d05958093019a516b3ab82cd974909bef3fccc2028486f54a9cb51c1ff84"
+    },
+    "sender/requirements.in": {
+      "before_sha256": "a82592520c5aa67a813397dfcc759a2ee3029fcbb4666a97d8f51e650194c4ae",
+      "after_sha256": "b46c77f833f59eb34f4c583a6d42c26864aaedc9c92145ab29df2fda11c03429"
+    },
+    "sender/requirements.lock": {
+      "before_sha256": "63f2cc920e520215dc6571cedf87297a1abfcdc6c5f229738b658e01d5d9f3a4",
+      "after_sha256": "dd4169a37ca465a28a57c5d13295ccd957f172b4408add4341db38697827c2ba"
+    },
+    "sender/runtime.json": {
+      "before_sha256": "90d3b0c2f1b0582776782f4b992d744e092f316664065189bb50fef9f2af5c0b",
+      "after_sha256": "4ae75b41613349aa3a51f3f49a952100234ed3750d5171ca1655ea122a25fb46"
+    }
+  },
+  "new_files": {
+    "sender/SERIAL.md": "218684cfe937bf0d2a8772e1a1c9045ad055b3ba6ef698a0048e4bf43a2198c5",
+    "sender/handoffs/C1-03-20261031.md": "e0436d70a9c4f4b27c07a767998500e8f52de82cd12bc1c81d3f7b092136f3e0",
+    "sender/serial_adapter.py": "2ab7458241c2f09695c8d6df43ae7042731fc81ebcb9bccc646e3993a46af174",
+    "sender/serial_cli.py": "2818b5ac89caac3e25ea9d777b928cf9fca9e257e7abfd00437ca532f07d6ab2",
+    "sender/tests/test_serial_adapter.py": "e8585f6ce8ad9d4a5fa8bcf08f8bcefd6b8e35b9963ddf13612f90c1318df984"
+  },
+  "unchanged_existing_file_count": 77,
+  "prior_dependency_records_reconstruct_baseline_exactly": {
+    "sender/requirements.in": true,
+    "sender/requirements.lock": true,
+    "sender/dependencies.json": true,
+    "sender/runtime.json": true
+  },
+  "unchanged_prior_sender_files": {
+    "sender/CLI.md": "ab3ede4b300ff67003e741d0e19799d32d83da102aec53c1be5ee22aee8d37e3",
+    "sender/cli.py": "5702fb6e63e9ba6779e88a5c9a7b1bf16683aa4286b28e4495c992d065ae1bd2",
+    "sender/handoffs/C1-01-20261031-files.json": "eed8afc4994e1869dfc511cb781dc98758d78f4d56fe89e7b94012b1ed34df8c",
+    "sender/handoffs/C1-01-20261031.md": "ada8127b49da343a8c4e47cb78775cd307c9f7ff2adccb4cc30d7bf941b06b86",
+    "sender/handoffs/C1-02-20261031-files.json": "97b3cd0f09bc767b45d140b0b864df1d58580d3e4a6e0f9eac53861f51bc15ed",
+    "sender/handoffs/C1-02-20261031.md": "fc6f4f074baab3c9088bd393cca5c34688c434fd3ff1112d577b6d58ae4828f3",
+    "sender/handoffs/relocation-20261031.md": "6a55be629cd1754d85f54ed0021ac4b3864bae1d99a2b6a5f7d64b9216d77e72",
+    "sender/make_sample.ps1": "36eb6a8ecdb84b05ef4fa28a496c34a72071d8399fabbee444e594471fb193aa",
+    "sender/microphone.py": "1fc53b6063d28273043752f00f9512a5ffb64435dd52e515a94c75a9641b8581",
+    "sender/offline_check.py": "7d9879df004c2ec9f772e4bf4b789553de6e58e7ef51608106eb78c0e0db2e39",
+    "sender/speech.py": "0e4fa069afa94526bf8f7d4c1387cf059694c92fc3c7a8130514fc4aa4f1aa70",
+    "sender/tests/test_cli.py": "8f7ce2dd8186df26b9446586d27ef308f3d5c2c72bd73de8e35de4dbc0be75f5",
+    "sender/tests/test_runtime.py": "68eb96565ff6c337f5f2946fea9386988c2d0ef86cf2ea4128b5a09373f5d208",
+    "sender/AGENTS.md": "44b24f5b504ece4256041a956d62f4e4973efa8e25df4b5e8fc893715de20b34",
+    "sender/artifacts.json": "2727a340d8c1053327966c164739f614c64370fe508d169f858312effabfc592",
+    "sender/config.example.json": "b019b9fae4a4b334cc5421bb8075f55ab148d45a44cb55a1475fab262918efdf",
+    "sender/contract.lock.json": "e5e68fb24e1da602c6d7d07767bb34b78151860cdab569accd422de1a4b2dfa7"
+  },
+  "note": "Compared with pre-task snapshot, not HEAD. This audit excludes itself. No files removed; all task changes stay inside sender. Existing dependency metadata reconstructs baseline byte-for-byte after removing pyserial fields/record. Ignored caches are not included."
+}

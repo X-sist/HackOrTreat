@@ -1,5 +1,53 @@
 {
-  "artifacts": [],
-  "status": "not-prepared",
-  "note": "Owner records exact source/revision/license/digest/local_path before claiming offline readiness. Large files are not committed."
+  "status": "local-files-prepared",
+  "model_repository": "Systran/faster-whisper-tiny.en",
+  "revision": "0d3d19a32d3338f10357c0889762bd8d64bbdeba",
+  "license_source": "https://huggingface.co/Systran/faster-whisper-tiny.en/blob/0d3d19a32d3338f10357c0889762bd8d64bbdeba/README.md",
+  "artifacts": [
+    {
+      "id": "whisper-tiny-en-config-json",
+      "source": "https://huggingface.co/Systran/faster-whisper-tiny.en/resolve/0d3d19a32d3338f10357c0889762bd8d64bbdeba/config.json",
+      "revision": "0d3d19a32d3338f10357c0889762bd8d64bbdeba",
+      "license": "MIT (publisher model-card declaration)",
+      "sha256": "14b1b421a90349bc551b881461426b561a874049cb9e4c4864f2ca384f6a7cc5",
+      "local_path": "models/tiny.en/config.json",
+      "bytes": 2317
+    },
+    {
+      "id": "whisper-tiny-en-model-bin",
+      "source": "https://huggingface.co/Systran/faster-whisper-tiny.en/resolve/0d3d19a32d3338f10357c0889762bd8d64bbdeba/model.bin",
+      "revision": "0d3d19a32d3338f10357c0889762bd8d64bbdeba",
+      "license": "MIT (publisher model-card declaration)",
+      "sha256": "1a5afae06a4db91c975c9a9d78be5cc110ee4ea022ad57d55492e4550e936b2a",
+      "local_path": "models/tiny.en/model.bin",
+      "bytes": 75537502
+    },
+    {
+      "id": "whisper-tiny-en-tokenizer-json",
+      "source": "https://huggingface.co/Systran/faster-whisper-tiny.en/resolve/0d3d19a32d3338f10357c0889762bd8d64bbdeba/tokenizer.json",
+      "revision": "0d3d19a32d3338f10357c0889762bd8d64bbdeba",
+      "license": "MIT (publisher model-card declaration)",
+      "sha256": "929c5252409436dce1b38a75d1abbcb5e132d170d8e324e4e04ed915fa2d22df",
+      "local_path": "models/tiny.en/tokenizer.json",
+      "bytes": 2128466
+    },
+    {
+      "id": "whisper-tiny-en-vocabulary-txt",
+      "source": "https://huggingface.co/Systran/faster-whisper-tiny.en/resolve/0d3d19a32d3338f10357c0889762bd8d64bbdeba/vocabulary.txt",
+      "revision": "0d3d19a32d3338f10357c0889762bd8d64bbdeba",
+      "license": "MIT (publisher model-card declaration)",
+      "sha256": "ff77588746d3a2595d32ab5b69ffd7b95ce2441ac57533cb66fc3eb575a115cf",
+      "local_path": "models/tiny.en/vocabulary.txt",
+      "bytes": 422309
+    },
+    {
+      "id": "whisper-tiny-en-README-md",
+      "source": "https://huggingface.co/Systran/faster-whisper-tiny.en/resolve/0d3d19a32d3338f10357c0889762bd8d64bbdeba/README.md",
+      "revision": "0d3d19a32d3338f10357c0889762bd8d64bbdeba",
+      "license": "MIT (publisher model-card declaration)",
+      "sha256": "1b7816626bf0548e4b71a467f4112b4592924bc818e3117f19aefcc50ce4b6aa",
+      "local_path": "models/tiny.en/README.md",
+      "bytes": 1323
+    }
+  ]
 }

@@ -1,0 +1,86 @@
+[
+  {
+    "path": "sender/artifacts.json",
+    "sha256": "2727a340d8c1053327966c164739f614c64370fe508d169f858312effabfc592"
+  },
+  {
+    "path": "sender/CLI.md",
+    "sha256": "ab3ede4b300ff67003e741d0e19799d32d83da102aec53c1be5ee22aee8d37e3"
+  },
+  {
+    "path": "sender/cli.py",
+    "sha256": "5702fb6e63e9ba6779e88a5c9a7b1bf16683aa4286b28e4495c992d065ae1bd2"
+  },
+  {
+    "path": "sender/dependencies.json",
+    "sha256": "aea79ed00348ab34d95d160040bf6a399a1336f4290f6ec25b0fe973e3a3d307"
+  },
+  {
+    "path": "sender/handoffs/C1-01-20261031.md",
+    "sha256": "ada8127b49da343a8c4e47cb78775cd307c9f7ff2adccb4cc30d7bf941b06b86"
+  },
+  {
+    "path": "sender/handoffs/C1-02-20261031.md",
+    "sha256": "fc6f4f074baab3c9088bd393cca5c34688c434fd3ff1112d577b6d58ae4828f3"
+  },
+  {
+    "path": "sender/handoffs/relocation-20261031.md",
+    "sha256": "6a55be629cd1754d85f54ed0021ac4b3864bae1d99a2b6a5f7d64b9216d77e72"
+  },
+  {
+    "path": "sender/make_sample.ps1",
+    "sha256": "36eb6a8ecdb84b05ef4fa28a496c34a72071d8399fabbee444e594471fb193aa"
+  },
+  {
+    "path": "sender/microphone.py",
+    "sha256": "1fc53b6063d28273043752f00f9512a5ffb64435dd52e515a94c75a9641b8581"
+  },
+  {
+    "path": "sender/offline_check.py",
+    "sha256": "7d9879df004c2ec9f772e4bf4b789553de6e58e7ef51608106eb78c0e0db2e39"
+  },
+  {
+    "path": "sender/prepare_runtime.py",
+    "sha256": "9c7047688f1b723283430d107e55b76fd71b7bd2d4e76ffec45fb7c4398ee5bd"
+  },
+  {
+    "path": "sender/README.md",
+    "sha256": "03634275cd8b36260230a6f8d4ef0f4034c5b63764c67d37885bb0f1d486f738"
+  },
+  {
+    "path": "sender/requirements.in",
+    "sha256": "a82592520c5aa67a813397dfcc759a2ee3029fcbb4666a97d8f51e650194c4ae"
+  },
+  {
+    "path": "sender/requirements.lock",
+    "sha256": "63f2cc920e520215dc6571cedf87297a1abfcdc6c5f229738b658e01d5d9f3a4"
+  },
+  {
+    "path": "sender/runtime.json",
+    "sha256": "90d3b0c2f1b0582776782f4b992d744e092f316664065189bb50fef9f2af5c0b"
+  },
+  {
+    "path": "sender/SETUP.md",
+    "sha256": "28697097c24fa6157374ec6ba93f1b4700b8334120a3cac75bccaeec3fb3e494"
+  },
+  {
+    "path": "sender/speech.py",
+    "sha256": "0e4fa069afa94526bf8f7d4c1387cf059694c92fc3c7a8130514fc4aa4f1aa70"
+  },
+  {
+    "path": "sender/TASKS.md",
+    "sha256": "118b29622f0da3042af38d7df6cb10a38397311551739762b629ff05fc6e8c09"
+  },
+  {
+    "path": "sender/tests/test_cli.py",
+    "sha256": "8f7ce2dd8186df26b9446586d27ef308f3d5c2c72bd73de8e35de4dbc0be75f5"
+  },
+  {
+    "path": "sender/tests/test_runtime.py",
+    "sha256": "68eb96565ff6c337f5f2946fea9386988c2d0ef86cf2ea4128b5a09373f5d208"
+  },
+  {
+    "path": "sender/verify.py",
+    "sha256": "4384d656a745fe85b2a52bb83b0ea479ae59f33346c2cca3710222fcfe85c66b"
+  }
+]

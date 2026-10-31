@@ -1,5 +1,17 @@
 {
-  "status": "unconfigured",
-  "python": null,
-  "note": "Select and test an exact supported interpreter in the component implementation task; current machine Python3.14 is not assumed compatible."
+  "status": "configured",
+  "python": "3.14.4",
+  "platform": "Windows x64",
+  "pip": "26.2.2",
+  "implementation": "faster-whisper",
+  "implementation_version": "1.2.1",
+  "device": "cpu",
+  "compute_type": "int8",
+  "cpu_threads": 4,
+  "model_relative_path": "models/tiny.en",
+  "microphone_backend": "sounddevice",
+  "microphone_backend_version": "0.5.6",
+  "note": "Isolated sender/.venv; never install into the receiver or global Python.",
+  "serial_backend": "pyserial",
+  "serial_backend_version": "3.5"
 }

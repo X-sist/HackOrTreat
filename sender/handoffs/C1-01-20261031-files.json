@@ -1,0 +1,58 @@
+[
+  {
+    "path": "sender/artifacts.json",
+    "sha256": "2727a340d8c1053327966c164739f614c64370fe508d169f858312effabfc592"
+  },
+  {
+    "path": "sender/dependencies.json",
+    "sha256": "256f4bbecab73c91ebb5bfcf225544563eda98dae835c5776a9ed2263b2495dd"
+  },
+  {
+    "path": "sender/handoffs/C1-01-20261031.md",
+    "sha256": "ada8127b49da343a8c4e47cb78775cd307c9f7ff2adccb4cc30d7bf941b06b86"
+  },
+  {
+    "path": "sender/make_sample.ps1",
+    "sha256": "36eb6a8ecdb84b05ef4fa28a496c34a72071d8399fabbee444e594471fb193aa"
+  },
+  {
+    "path": "sender/offline_check.py",
+    "sha256": "7d9879df004c2ec9f772e4bf4b789553de6e58e7ef51608106eb78c0e0db2e39"
+  },
+  {
+    "path": "sender/prepare_runtime.py",
+    "sha256": "602eece5ffe35dc7623b56325335e9f5f5cc038d4ebbc7d2420a0a1f1be7db5b"
+  },
+  {
+    "path": "sender/README.md",
+    "sha256": "c04cd2c04426efca126ffbb8eac8727783df1cc4a9585d83c1ad9638dda84932"
+  },
+  {
+    "path": "sender/requirements.in",
+    "sha256": "ff915fe7e196734034fdb10c5672c0f92e77812ec6a1f1db4900aac500a79fa2"
+  },
+  {
+    "path": "sender/requirements.lock",
+    "sha256": "e89437ec48d6fb4a29e269e787072091ac92e9a4a69187da12d43ffe8022522d"
+  },
+  {
+    "path": "sender/runtime.json",
+    "sha256": "9ecc7918fa3637d378f949855b2951225afde8bf5d2c384570d5cceb88365f7f"
+  },
+  {
+    "path": "sender/SETUP.md",
+    "sha256": "f9d537635d847ac5425709d59ecbd0a6a31ca0a9eff787d717d0ee1bedbf69e7"
+  },
+  {
+    "path": "sender/TASKS.md",
+    "sha256": "bf05f6c45058742566fe2d68d6de40cba59e16f827ae4fbeb9e3c919cf941209"
+  },
+  {
+    "path": "sender/tests/test_runtime.py",
+    "sha256": "68eb96565ff6c337f5f2946fea9386988c2d0ef86cf2ea4128b5a09373f5d208"
+  },
+  {
+    "path": "sender/verify.py",
+    "sha256": "804be6575540c9689c378a75d5533e67ae7cd20e4c6b25876b6566c1a12e9db7"
+  }
+]

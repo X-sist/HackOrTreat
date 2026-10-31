@@ -1,1 +1,6 @@
-# No runtime dependencies selected yet. Owner adds exact direct pins in its first implementation task.
+# Windows x64 / CPython 3.14.4. PyAV pinned: 19 removes metadata_errors used by faster-whisper1.2.1.
+faster-whisper==1.2.1
+av==16.0.1
+pip==26.2.2
+sounddevice==0.5.6
+pyserial==3.5
