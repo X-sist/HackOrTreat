@@ -11,10 +11,16 @@ from shared.python.contract import build_send, validate_event
 C = CONTRACT['constants']
 
 
-def open_local_port(port, serial_factory=None):
-    """Explicit hardware seam, not used by the simulator. Never accepts URL ports."""
+def validate_local_port(port):
+    """Validate selection before any recording or hardware operation."""
     if not isinstance(port, str) or re.fullmatch(r'COM[1-9][0-9]*', port, re.IGNORECASE) is None:
         raise ValueError('Choose an explicit local Windows COM port, such as COM3.')
+    return port
+
+
+def open_local_port(port, serial_factory=None):
+    """Explicit hardware seam, not used by the simulator. Never accepts URL ports."""
+    validate_local_port(port)
     if serial_factory is None:
         from serial import Serial
         serial_factory = Serial
@@ -87,7 +93,7 @@ class SerialAdapter:
             self._fail(str(error))
             raise OSError('Serial write failed; reconnect, do not automatically resend.') from error
 
-    def start(self, now):
+    def start(self, now, request_hello=True):
         if self.state != 'disconnected':
             self._fail('Connection replaced; prior operation may have transmitted.')
         self.buffer.clear()
@@ -95,6 +101,14 @@ class SerialAdapter:
         self.hello = False
         self.state = 'handshake'
         self.deadline = now + C['HOST_BOOT_TIMEOUT_MS'] / 1000
+        self.hello_requested = False
+        if request_hello:
+            self.request_identity()
+
+    def request_identity(self):
+        if self.state != 'handshake' or self.hello or self.hello_requested:
+            raise RuntimeError('HELLO is allowed once during discovery, before Tx hello.')
+        self.hello_requested = True
         self._write(b'HELLO\n')
 
     def tick(self, now):
