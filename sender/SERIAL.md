@@ -26,3 +26,7 @@ For future C1-04 integration, the caller owns transport closure: use the port's 
 ## Verification and review
 
 `sender/.venv/Scripts/python.exe sender/verify.py` runs sender tests, package consistency and native imports without recording audio or opening serial hardware. pySerial 3.5 adds one official SHA-256-verified wheel, for 29 total; all prior dependency pins and model artifacts are preserved. Gemini review is pending; see `handoffs/C1-03-20261031.md` for the focused review prompt and verification evidence.
+
+## C1-04 integration update
+
+The main `cli.py` now exposes explicit one-shot local-port sends and connection-only checks; see CLI.md and handoffs/C1-04-20261031.md. `serial_cli.py` remains simulation-only. Hardware connections first read boot events and issue at most one fallback HELLO after two seconds without a valid hello, inside the shared five-second discovery limit. The original adapter start behavior remains available for callers that explicitly request immediate HELLO. Real-board acceptance still needs compatible Tx firmware.

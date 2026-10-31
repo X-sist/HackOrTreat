@@ -1,8 +1,12 @@
 # CS Major 1 workspace — @Aiden360-stack
 
-**C1-02 CLI is implemented; your live offline microphone check is pending.** See [CLI.md](CLI.md) for the start command and Enter-to-record/stop controls. Current branch: `sender/C1-02-microphone`, in your usual HackOrTreat repository, including the uncommitted C1-01 work. C1-03 now adds the serial adapter and manual simulator; no other component changes.
+## Current sender integration
 
-**C1-03 is implemented; Gemini review is pending.** See [SERIAL.md](SERIAL.md) for manual text and simulated Arduino scenarios. This does not complete C1-02 live microphone acceptance or start C1-04.
+C1-04 sender software is implemented with 51 passing sender tests. See [CLI.md](CLI.md) for explicit send/check/port commands and [the C1-04 handoff](handoffs/C1-04-20261031.md) for evidence. Compatible Tx firmware, real-board acceptance and independent Gemini review remain pending.
+
+**C1-02 live microphone capture and the exact demo phrase are user-verified; network-disabled acceptance is unconfirmed.** See [CLI.md](CLI.md) for the start command and Enter-to-record/stop controls. Current branch: `sender/C1-02-microphone`, in your usual HackOrTreat repository, including the uncommitted C1-01 work. C1-03 now adds the serial adapter and manual simulator; no other component changes.
+
+**C1-03 is implemented; Gemini review is pending.** See [SERIAL.md](SERIAL.md) for manual text and simulated Arduino scenarios. C1-04 is now implemented as described above; physical offline and board acceptance remain pending.
 
 **C1-01 is prepared.** Read [SETUP.md](SETUP.md) for the two local verification commands and offline preparation details. The prepared runtime and C1-02 CLI are now together on `sender/C1-02-microphone` in this repository. Model files, wheel cache and the environment are local/ignored; they do not arrive through Git alone.
 
