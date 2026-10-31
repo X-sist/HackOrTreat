@@ -1,0 +1,84 @@
+name: Team compatibility
+on:
+  pull_request:
+  push:
+    branches: [main]
+  merge_group:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: compatibility-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5.6.0
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4.4.0
+        with:
+          node-version: '24.15.0'
+      - name: Generated contract and consumer pins
+        run: python tools/generate_contract.py --check
+      - name: Shared dependency, event and boundary checks
+        run: python tools/check_repo.py
+      - name: Original transport vectors
+        run: python tools/validate_protocol_vectors.py
+      - name: Collaboration regression tests
+        run: python -m unittest discover -s tests -v
+      - name: JavaScript boundary parity
+        run: node tools/check_js_contract.mjs
+      - name: C++ generated header smoke check (not Arduino firmware)
+        run: g++ -std=c++11 -Wall -Wextra -pedantic tests/contract_header.cpp -o /tmp/hackortreat-contract && /tmp/hackortreat-contract
+  ownership:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5.6.0
+        with:
+          python-version: '3.12'
+      - run: python tools/check_ci_scope.py
+  components:
+    name: component (${{ matrix.component }})
+    runs-on: windows-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        component: [firmware, sender, receiver]
+    steps:
+      - uses: actions/checkout@v4.2.2
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5.6.0
+        with:
+          python-version: '3.12'
+      - name: Select owner-pinned Python
+        id: runtime
+        env:
+          COMPONENT: ${{ matrix.component }}
+        run: python tools/run_component_checks.py $env:COMPONENT --select-python
+      - uses: actions/setup-python@v5.6.0
+        with:
+          python-version: ${{ steps.runtime.outputs.python }}
+      - uses: actions/setup-node@v4.4.0
+        with:
+          node-version: '24.15.0'
+      - name: Run owner-local CI hook
+        env:
+          COMPONENT: ${{ matrix.component }}
+        run: python tools/run_component_checks.py $env:COMPONENT

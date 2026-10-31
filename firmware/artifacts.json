@@ -1,0 +1,5 @@
+{
+  "artifacts": [],
+  "status": "not-prepared",
+  "note": "Owner records exact source/revision/license/digest/local_path before claiming offline readiness. Large files are not committed."
+}

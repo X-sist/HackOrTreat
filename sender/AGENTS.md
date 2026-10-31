@@ -1,0 +1,4 @@
+# CS Major 1: @Aiden360-stack
+Work in `sender/` only for ordinary component tasks. Read root AGENTS.md, WORKFLOW.md, this folder's TASKS.md, and shared/README.md. Laptop 1 only: offline Whisper, Python microphone/transcript CLI, normalization and paced USB serial output. Import shared.python.contract and shared.generated.protocol. No receiver, model-response, audio-output, Electron or firmware dependencies.
+
+One selected task per request. Update this folder's task file and add unique handoffs under `sender/handoffs/`; do not update root TASKS.md or another owner's tracker. Use existing shared fixtures to develop independently. Local assets, secrets, serial ports and model paths belong in ignored component config/storage. Dependency manifests/locks stay in this folder. Never edit `contract.lock.json`; an integration PR refreshes all consumer pins together. Do not create agents, message teammates, commit, push or change GitHub settings unless authorized by the task.
