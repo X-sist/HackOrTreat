@@ -1,4 +1,7 @@
 # HackOrTreat
+A ghastly talk with AI!!!! From beyond the grave....
+😭
+
 An offline spirit-communication demo: Laptop 1 transcribes speech, an Arduino sends text over one-way IR, and Laptop 2 displays the received text and generates a local open-weight spirit response with audio/visuals. Target: Best Open-Source AI Project; full readiness/eligibility is not yet established.
 
 **Start with [WORKFLOW.md](WORKFLOW.md).** Three independent workspaces, one versioned contract:
