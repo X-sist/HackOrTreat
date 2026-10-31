@@ -1,5 +1,7 @@
 # HackOrTreat coding workflow
 
+Target Best Open-Source AI Project at Hacktoberfest Hack Day Lexington x Women in Data Science at UK. Follow SOFTWARE-REQUIREMENTS.md for published criteria and evidence. Local open-weight inference must meaningfully power the final demo; using coding assistants alone is insufficient. Prefer Qwen2.5-1.5B-Instruct (publisher-declared Apache 2.0), pending exact artifact/runtime verification. User-confirmed hardware: two Uno R3 boards, one V1221 transmitter, one V1222 receiver, and two reported identical demo laptops (local machine inventoried; second environment untested). Do not infer module pinouts or claim full organizer approval.
+
 The deliverable is a desktop app with sender (Living Plane) and receiver (Spirit Plane) modes. Build the basic UI alongside backend services using agreed event/command contracts and explicitly labeled mocks. Preserve the real speech-to-IR-to-plain-text milestone before theatrical polish. Follow U01/U02/U03 in TASKS.md for UX/contract, minimal shell, and packaging respectively. CLI tools are development aids. Electron remains provisional until platform and service packaging are checked. The final rehearsal uses packaged apps without a development server or internet. Apply the same one-task-per-request limit to UI work.
 
 When I ask to build or fix something in HackOrTreat, use Codex as the implementer and Gemini in Antigravity as the independent reviewer.

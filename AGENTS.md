@@ -5,6 +5,9 @@ Use this workflow for ordinary feature requests, fixes, and review requests. Fol
 ## Project mission and task size
 Read PROJECT-BRIEF.md before project planning or implementation. It defines the offline, one-way IR demo and the open-weight award goal. Read TASKS.md to select scope. Work on exactly one selected task per request; "next task" means the first uncompleted task whose dependencies are satisfied. Do not build the whole roadmap in one prompt or advance automatically after finishing. If task completion is unclear, inspect evidence before updating its status. Preserve the plain-text hardware milestone before adding theatrical features. Never claim award eligibility, offline readiness, hardware validation, or model licensing without evidence. Task-specific acceptance criteria and the brief supplement the verification and review workflow below.
 
+## Software and award requirements
+Read SOFTWARE-REQUIREMENTS.md when selecting dependencies/models or verifying the final demo. Target Best Open-Source AI Project; live local open-weight inference is essential, not optional polish. Default candidate: Qwen2.5-1.5B-Instruct, exact artifact and license notices verified in T09. Keep published category criteria separate from team choices and unknown organizer policies. Use confirmed Uno R3 / V1221 / V1222 identities without inventing module pinouts.
+
 ## Roles
 
 The final product is a desktop app with Living Plane (sender) and Spirit Plane (receiver) modes. Build basic UI alongside backend adapters using the shared event contract and visible mocks; do not defer all UI until backend completion. Follow U01/U02/U03 in TASKS.md. CLIs are development aids. Electron is provisional until U01 validates platform and packaging. Decorative polish still follows the real plain-text IR milestone.

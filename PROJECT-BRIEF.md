@@ -1,9 +1,9 @@
 # HackOrTreat project brief
 
 ## Goal and success
-Target the hackathon's open-weight award with a theatrical, fully offline voice-to-IR spirit communication demo. Award name, eligibility, permitted preparation, model requirements, and judging criteria are not yet verified: obtain official rules before making compliance claims. The supplied blueprint is the design source, not evidence that components have been installed or tested. The six-hour sprint is a planning constraint, not a verified delivery estimate.
+Target Best Open-Source AI Project at Hacktoberfest Hack Day Lexington x Women in Data Science at UK with a theatrical, fully offline voice-to-IR demo. The published category requires an original project with substantive open-source/open-weight AI use. Read SOFTWARE-REQUIREMENTS.md for verified sources, software acceptance criteria, and unconfirmed organizer policies. The design aligns with the category description; full eligibility is not yet established. The supplied blueprint is the design source, not evidence that components have been installed or tested. The six-hour sprint is a planning constraint, not a verified delivery estimate.
 
-Minimum demonstrable system: speak into Laptop 1, show the offline transcription, transmit its text over a real one-way IR link, and display decoded plain text on Laptop 2. This hardware path is the first priority. Local AI response, distorted speech, planchette animation, and ambiance enhance the demo after that path works.
+Minimum demonstrable system: speak into Laptop 1, show the offline transcription, transmit its text over a real one-way IR link, and display decoded plain text on Laptop 2. This hardware path is the first engineering milestone. Substantive local open-weight AI response generation is required for the final award-targeted demo; distorted speech, planchette animation, and ambiance follow the working path.
 
 ## Desktop product
 The final deliverable is a desktop app with a shared codebase and two selectable modes, one per laptop. A command-line-only demo is not the product target.
@@ -18,10 +18,10 @@ The final deliverable is a desktop app with a shared codebase and two selectable
 - Packaging is an explicit task: document bundled versus preinstalled dependencies and local artifact paths; verify microphone/serial access, missing-artifact errors, and launch without a development server or internet on each laptop.
 
 ## Hardware constraints
-- Two laptops, proposed specification i5-1334U and 32 GB RAM each. Confirm actual machines and operating systems.
-- Two Arduino boards connected by USB data cables, one board per laptop. Board models and pins are still unconfirmed.
+- Two demo laptops, user-reported identical. This inspected laptop is a Dell Inspiron 15 3530, i5-1334U, nominal 32 GB RAM, Windows 11 Pro. The second environment still needs direct verification.
+- Two Arduino Uno R3 boards (user-confirmed as "Uno 3"), one per laptop via USB data cable. Connection, drivers, pin assignments, and firmware remain untested.
 - Exactly one IR transmitter and one IR receiver total. Arduino A transmits; Arduino B receives. No bidirectional link, receiver acknowledgements, or remote retransmission requests.
-- Proposed receiver: TSOP38238 or equivalent, and a transmitter using a 38 kHz carrier. Confirm actual parts, wiring, voltage/current requirements, modulation support, and library compatibility before firmware implementation.
+- Actual module labels supplied by user: V1221 transmitter and V1222 receiver. Manufacturer pinout, voltage/current constraints, carrier behavior, timing, and library compatibility still require verification. TSOP38238 was an earlier example, not the confirmed module identity.
 - No inter-laptop network, cloud inference, or internet at runtime. Localhost services and USB to each local Arduino are allowed. Do not use shared storage or another hidden channel to carry the prompt between laptops.
 
 ## Target performance for judges
@@ -37,7 +37,7 @@ A judge interrupts the beam during a transmission. Laptop 2 shows an appropriate
 
 Proposed starting stack from the supplied blueprint:
 - STT: faster-whisper or whisper.cpp with tiny.en model files. Choose one in a small task after checking installation and offline startup.
-- LLM: Ollama with locally downloaded Qwen 2.5 1.5B or 3B, Q4_K_M quantization where supported. Benchmark on the receiving laptop before choosing. Record the exact model artifact, license, source, and local identifier rather than assuming a tag names a particular quantization.
+- LLM: preferred candidate Qwen2.5-1.5B-Instruct with a local Q4_K_M artifact where supported, proposed Ollama runtime. Its official model/GGUF pages declare Apache 2.0; the 3B variant has different license terms and is not interchangeable by assumption. T09 verifies the exact artifact, revision/digest, runtime identifier, license notices, and latency. Nothing has been downloaded or benchmarked yet.
 - Speech output: Piper with a local ONNX voice and its required configuration; optional Pedalboard effects. Verify voice and software licenses separately. Keep intelligibility and playback reliability ahead of heavy effects.
 - Desktop integration/UI: shared sender/receiver shell with local HTML/CSS/JS; proposed Node.js/serialport adapters and local Python speech worker. A Python sender CLI is a development aid only. Confirm framework and service lifecycle in U01; pin actual dependencies once selected.
 - Firmware: proposed Arduino IDE/toolchain and IRremote. Verify feasible packet encoding, timing, and payload limits on the actual boards rather than assuming arbitrary strings are supported directly.
@@ -68,7 +68,7 @@ CE teammate owns wiring, board compatibility, IR firmware, real transport throug
 Within six hours, prioritize contract and smoke tests, then plain-text IR, then offline speech input and local AI output, then theater and rehearsal. Drop decorative effects or animation polish before compromising offline operation or the real transport path. Use TASKS.md for individual prompts and dependencies. Do not execute the full sprint in one request.
 
 ## Unresolved facts to confirm in relevant tasks
-- Official hackathon rules and precise open-weight category requirements.
-- Actual board models, IR parts, wiring, laptop operating systems, and installed artifacts.
+- Remaining organizer policies beyond the verified category description: advance work, eligibility/team size, coding-assistant use, source publication, and submission format. See SOFTWARE-REQUIREMENTS.md.
+- Hardware identities are user-confirmed (Uno R3, V1221, V1222); physical pinout/wiring, USB readiness, second-laptop environment, and installed model artifacts need verification.
 - Chosen protocol encoding and tested IR payload/rate/range; whether heartbeats are needed.
 - STT/LLM/TTS latency, microphone conditions, voice intelligibility, and asset provenance.

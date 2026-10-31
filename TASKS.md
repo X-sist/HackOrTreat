@@ -1,10 +1,10 @@
 # Small-task roadmap
 
-All tasks start pending. Update a status only with evidence from the repository or actual verification. Do one task per request, then stop with results, unresolved items, and a suggested next task. Do not install models, implement firmware, and build UI in one prompt. Split a task further if it becomes too broad. Completion of mocks does not mean hardware or offline acceptance passed.
+Statuses below reflect recorded task evidence. Update a status only with evidence from the repository or actual verification. Do one task per request, then stop with results, unresolved items, and a suggested next task. Do not install models, implement firmware, and build UI in one prompt. Split a task further if it becomes too broad. Completion of mocks does not mean hardware or offline acceptance passed.
 
 | ID | Status | Depends on | Bounded task and completion evidence |
 | --- | --- | --- | --- |
-| T01 | pending | — | Inventory actual hardware, OS, installed tools/models, and supplied official hackathon rules. Save confirmed facts, unknowns, sources, and blockers. Do not install dependencies or claim award eligibility without rules. Unknown facts may remain explicitly unresolved. |
+| T01 | complete (unknowns recorded) | — | Inventory actual hardware, OS, installed tools/models, and supplied official hackathon rules. Save confirmed facts, unknowns, sources, and blockers. Do not install dependencies or claim award eligibility without rules. Unknown facts may remain explicitly unresolved. |
 | T02 | pending | T01 | Specify one-way IR packet and serial event contracts. Include example valid, checksum-failure, partial-timeout, duplicate, and oversized cases. Decide whether idle heartbeat detection is required; record event semantics and limits. No firmware or full app yet. |
 | U01 | pending | T01, T02 | Define sender/receiver screen sketches, actions/states, local UI/service event and command contracts, mock/live boundary, target OS, desktop framework decision, and service lifecycle/packaging plan. Electron is provisional. Design/contracts only; no full app. |
 | U02 | pending | U01 | Implement minimal desktop shell with sender/receiver mode selection, transcript editing/manual send, plain-text receiver, connection/errors, and collapsible diagnostics using visible mock mode. Render both screens and verify interactions. No real hardware, model, audio, or decorative art. |
@@ -14,7 +14,7 @@ All tasks start pending. Update a status only with evidence from the repository 
 | T06 | pending | T03, T04, T05 | Connect manual text entry on Laptop 1 through USB/IR to the plain-text display on Laptop 2. Check ordering, pacing, bounds, and recovery. No speech or model yet. Record real two-machine evidence. |
 | T07 | pending | T01, T02 | Add offline STT and local transcript display on Laptop 1 using one selected implementation. Verify local artifacts and fresh-process transcription with Wi-Fi disabled. No IR integration in this task. |
 | T08 | pending | T06, T07 | Connect bounded STT output to the sender. Demonstrate speech-to-text-to-IR-to-received-text offline. This is the minimum demo milestone. |
-| T09 | pending | T03, T01 | Add local Ollama/Qwen adapter using validated text or explicit disturbance fixtures. Keep raw received text visible and model output separate. Test local startup, timeouts, unavailable model, short responses, and provenance. No audio/UI animation. |
+| T09 | pending | T03, T01 | Required for the award-targeted demo: follow SOFTWARE-REQUIREMENTS.md, verify the exact preferred Qwen2.5-1.5B-Instruct artifact, revision/digest, license notices, and runtime identifier; add local Ollama/Qwen adapter using validated text or explicit disturbance fixtures. Keep raw received text visible and model output separate. Test local startup, timeouts, unavailable model, short responses, and provenance. No audio/UI animation. |
 | T10 | pending | T09 | Add offline Piper speech playback with a bounded single-response queue and graceful errors. Verify voice files/license and intelligibility; add distortion only if reliable playback remains intact. |
 | T11 | pending | T03, T09 | Add locally bundled Ouija board and planchette animation driven by response text. Test spaces, punctuation, cancellation, repeat responses, and readable transport errors. No CDN assets. |
 | T12 | pending | T08, T09, T10, T11 | Integrate the theatrical receiver flow. Begin animation during speech generation, avoid overlapping voices, and keep transport/error text honest. Exercise valid and disturbed physical transmissions. |
@@ -31,3 +31,5 @@ Suggested prompts:
 - "Review the implementation of T02 only against the project brief; return actionable findings without editing code."
 
 The roadmap is intentionally more granular than the three human roles in the blueprint. Each task is a prompt boundary, not a promise that it takes a fixed number of minutes. When the user selects a task with unmet dependencies, explain the concrete missing contract or evidence and complete only independent work inside that task if useful.
+
+T01 evidence: [inventory and blockers](docs/ai/tasks/T01-20261031-inventory/inventory.md), collected October 31, 2026. Updated with user-confirmed Uno R3/V1221/V1222 identities, identical demo-laptop report, and verified public category sources in SOFTWARE-REQUIREMENTS.md. Runtime/physical readiness, second-machine environment, and remaining organizer policies are unverified.
