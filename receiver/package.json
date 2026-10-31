@@ -7,5 +7,10 @@
     "node": "24.15.0"
   },
   "packageManager": "npm@11.12.1",
+  "scripts": {
+    "test": "node tests/test_stream_parser.mjs",
+    "start": "node src/server.mjs",
+    "cli": "node src/cli.mjs"
+  },
   "dependencies": {}
 }
