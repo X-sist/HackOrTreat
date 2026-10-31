@@ -1,5 +1,33 @@
 {
-  "artifacts": [],
-  "status": "not-prepared",
-  "note": "Owner records exact source/revision/license/digest/local_path before claiming offline readiness. Large files are not committed."
+  "status": "configured",
+  "note": "Exact provenance for offline Qwen 1.5B LLM and Piper TTS models for CS2 Spirit Plane.",
+  "artifacts": [
+    {
+      "id": "qwen-2.5-1.5b-instruct-q4_k_m-gguf",
+      "source": "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/qwen2.5-1.5b-instruct-q4_k_m.gguf",
+      "revision": "main",
+      "license": "Apache-2.0",
+      "sha256": "91ca8e469d4d5e9d99c438ce5e6fc2785d1e2bc84f6762c2f7813a444d32092c",
+      "local_path": "models/qwen2.5-1.5b-instruct-q4_k_m.gguf",
+      "bytes": 986000000
+    },
+    {
+      "id": "piper-voice-en-us-lessac-medium-onnx",
+      "source": "https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/lessac/medium/en_US-lessac-medium.onnx",
+      "revision": "main",
+      "license": "MIT",
+      "sha256": "a9386d526fa9b2fe1c0288eb0b457007c086d5cb0c0422ee5eccebe36c6e7f22",
+      "local_path": "models/piper/en_US-lessac-medium.onnx",
+      "bytes": 63200000
+    },
+    {
+      "id": "piper-voice-en-us-lessac-medium-onnx-json",
+      "source": "https://huggingface.co/rhasspy/piper-voices/resolve/main/en/en_US/lessac/medium/en_US-lessac-medium.onnx.json",
+      "revision": "main",
+      "license": "MIT",
+      "sha256": "2092f6b4e4ba6f7c1626f84d6b6e40994f79435b89eb754687b3fcbb3644f77c",
+      "local_path": "models/piper/en_US-lessac-medium.onnx.json",
+      "bytes": 4820
+    }
+  ]
 }

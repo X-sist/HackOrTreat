@@ -33,10 +33,10 @@ $npmVersion = npm --version 2>&1
 Write-Host "Node: $nodeVersion (Baseline: 24.15.0)" -ForegroundColor Green
 Write-Host "npm:  v$npmVersion (Baseline: 11.12.1)" -ForegroundColor Green
 
-# 4. Run Receiver StreamParser Tests
-Write-Host "`n[4/4] Running StreamParser tests and shared fixture replays..." -ForegroundColor Yellow
-$testScript = Join-Path $PSScriptRoot "tests/test_stream_parser.mjs"
-node $testScript
+# 4. Run Receiver CS2 Tests
+Write-Host "`n[4/4] Running CS2 test suites (41 assertions)..." -ForegroundColor Yellow
+node (Join-Path $PSScriptRoot "tests/test_stream_parser.mjs")
+node (Join-Path $PSScriptRoot "tests/test_cs2_pipeline.mjs")
 
 Write-Host "`n=======================================================" -ForegroundColor Green
 Write-Host "  ENVIRONMENT READY FOR HACKATHON PERFORMANCE!         " -ForegroundColor Green

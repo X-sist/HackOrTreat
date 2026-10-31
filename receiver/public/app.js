@@ -1,6 +1,7 @@
 /* ==========================================================================
-   HACKORTREAT — RECEIVER CLIENT (app.js)
-   Renders Ouija board, animates planchette, and listens for contract v1 events
+   HACKORTREAT — RECEIVER CLIENT (app.js) [T11 Full Integration]
+   Renders Ouija board, animates planchette, plays offline audio,
+   and separates input question vs. spirit response with readable transport errors.
    ========================================================================== */
 
 const LETTERS_TOP = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'];
@@ -25,6 +26,7 @@ const aetherStatusText = document.getElementById('aetherStatusText');
 const targetElements = new Map();
 let isSpelling = false;
 let spellingQueue = [];
+let audioPlayer = new Audio();
 
 function initBoard() {
   arcTop.innerHTML = '';
@@ -108,7 +110,7 @@ async function spellText(text) {
   const clean = text.toUpperCase().replace(/[^A-Z0-9\s]/g, '');
   const tokens = clean.split('');
 
-  logMessage(`[SPELLING] "${clean}"`, 'spirit');
+  logMessage(`[SPIRIT SPELLS] "${clean}"`, 'spirit');
 
   for (let i = 0; i < tokens.length; i++) {
     const char = tokens[i];
@@ -116,7 +118,7 @@ async function spellText(text) {
 
     if (char === ' ') {
       currentLetterDisplay.textContent = '— [Space] —';
-      await new Promise(r => setTimeout(r, 400));
+      await new Promise(r => setTimeout(r, 380));
       continue;
     }
 
@@ -125,7 +127,7 @@ async function spellText(text) {
       currentLetterDisplay.textContent = `Pointing to: "${char}"`;
       movePlanchetteToElement(targetEl);
       targetEl.classList.add('active');
-      await new Promise(r => setTimeout(r, 650));
+      await new Promise(r => setTimeout(r, 620));
     }
   }
 
@@ -162,7 +164,7 @@ function triggerDisturbanceVisuals(code, reason) {
   dot.className = 'indicator-dot dot-red';
 
   playDisturbanceTone();
-  logMessage(`ALERT: ${code} (${reason}) — Trapped spirit agitated!`, 'disturbed');
+  logMessage(`[TRANSPORT ERROR] ${code} (${reason}) — Beam disrupted!`, 'disturbed');
 
   setTimeout(() => {
     glitchOverlay.classList.remove('disturbed');
@@ -200,6 +202,16 @@ function playDisturbanceTone() {
   } catch {}
 }
 
+function playAudioFile(url) {
+  if (!url) return;
+  try {
+    audioPlayer.src = url + '?t=' + Date.now();
+    audioPlayer.play().catch(() => {
+      // Audio autoplay policy may require a prior user gesture
+    });
+  } catch {}
+}
+
 async function triggerSimulate(type, text = '') {
   try {
     const res = await fetch('/api/simulate', {
@@ -227,10 +239,30 @@ function connectSSE() {
     logMessage(`[HELLO] Board boot recognized. Max text: ${data.maxTextBytes} bytes.`, 'system');
   });
 
-  eventSource.addEventListener('message', (e) => {
+  // T11: Strict separation of Input Status vs. Spirit Response
+  eventSource.addEventListener('input_received', (e) => {
     const data = JSON.parse(e.data);
-    logMessage(`[IR-RX MESSAGE] session=${data.session} seq=${data.seq}: "${data.text}"`, 'incoming');
-    spellText(data.text);
+    logMessage(`[INPUT FROM LIVING] session=${data.session} seq=${data.seq}: "${data.text}"`, 'incoming');
+    currentLetterDisplay.textContent = 'Mortal speaks... summoning spirit';
+  });
+
+  eventSource.addEventListener('spirit_thinking', (e) => {
+    const data = JSON.parse(e.data);
+    logMessage(`[ORACLE] Channeling through local Qwen LLM (${data.stage})...`, 'system');
+  });
+
+  eventSource.addEventListener('spirit_response', (e) => {
+    const data = JSON.parse(e.data);
+    logMessage(`[SPIRIT REVELATION] "${data.responseText}"`, 'spirit');
+    if (data.offlineNotice) {
+      logMessage(`[NOTE] ${data.offlineNotice}`, 'system');
+    }
+    // Play voice audio
+    if (data.audioFile) {
+      playAudioFile(data.audioFile);
+    }
+    // Animate planchette
+    spellText(data.responseText);
   });
 
   eventSource.addEventListener('disturbance', (e) => {
@@ -240,7 +272,7 @@ function connectSSE() {
 
   eventSource.addEventListener('duplicate', (e) => {
     const data = JSON.parse(e.data);
-    logMessage(`[DUPLICATE DROP] session=${data.session} seq=${data.seq} ignored`, 'duplicate');
+    logMessage(`[DUPLICATE DROP] session=${data.session} seq=${data.seq} ignored (deduplicated)`, 'duplicate');
   });
 
   eventSource.addEventListener('protocol_error', (e) => {

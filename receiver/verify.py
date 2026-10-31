@@ -12,12 +12,16 @@ def main():
     parser.add_argument('--ci', action='store_true')
     args = parser.parse_args()
 
-    # Run StreamParser unit tests and fixture replays
-    test_script = RECEIVER / 'tests' / 'test_stream_parser.mjs'
-    print(f'Running receiver tests: {test_script}')
-    subprocess.run(['node', str(test_script)], cwd=ROOT, check=True)
+    tests = [
+        RECEIVER / 'tests' / 'test_stream_parser.mjs',
+        RECEIVER / 'tests' / 'test_cs2_pipeline.mjs',
+    ]
 
-    print('PASS: Receiver (CS2) T03 stream parser and fixture tests passed cleanly.')
+    for test_script in tests:
+        print(f'Running receiver test: {test_script.name}')
+        subprocess.run(['node', str(test_script)], cwd=ROOT, check=True)
+
+    print('PASS: All CS2 component deliverables (T03, T09, T10, T11) verified cleanly.')
 
 if __name__ == '__main__':
     main()

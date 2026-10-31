@@ -3,6 +3,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { StreamParser } from './stream_parser.mjs';
+import { QwenInference } from './qwen_inference.mjs';
+import { AudioEngine } from './audio_engine.mjs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,26 +24,75 @@ function broadcastEvent(type, payload) {
   }
 }
 
-// Instantiate StreamParser wired to SSE broadcast
+// Initialize Subsystems
+const qwen = new QwenInference();
+const audio = new AudioEngine();
+
+// Instantiate StreamParser wired to Qwen and Audio pipelines
 const parser = new StreamParser({
-  onMessage: ({ session, seq, text, raw }) => {
-    broadcastEvent('message', { session, seq, text, raw });
+  onMessage: async ({ session, seq, text, raw }) => {
+    // 1. Separate Input Status
+    broadcastEvent('input_received', { session, seq, text, raw });
+    qwen.recordValidMessage(text);
+
+    // 2. Qwen Local Offline Inference (T09)
+    broadcastEvent('spirit_thinking', { stage: 'invoking_qwen' });
+    const spiritResult = await qwen.generateResponse({ type: 'message', text });
+
+    // 3. Audio Synthesis (T10)
+    const audioResult = await audio.synthesize(spiritResult.text);
+
+    // 4. Spirit Response Output (T11 separation)
+    broadcastEvent('spirit_response', {
+      session,
+      seq,
+      promptText: text,
+      responseText: spiritResult.text,
+      offlineNotice: spiritResult.offline ? 'Operating in offline model fallback mode.' : undefined,
+      audioFile: audioResult.audioFile,
+      disturbed: false,
+    });
   },
-  onDisturbance: ({ code, reason, raw }) => {
-    broadcastEvent('disturbance', { code, reason, raw });
+
+  onDisturbance: async ({ code, reason, session, seq, raw }) => {
+    // 1. Real Transport Error Event
+    broadcastEvent('disturbance', { code, reason, session, seq, raw });
+
+    // 2. Disturbance-Triggered Spirit Response (throttled per PROTOCOL.md)
+    broadcastEvent('spirit_thinking', { stage: 'channeling_disturbed' });
+    const spiritResult = await qwen.generateResponse({ type: 'disturbance', code, reason });
+
+    // 3. Spooky Audio Synthesis
+    const audioResult = await audio.synthesize(spiritResult.text, { disturbed: true });
+
+    // 4. Broadcast Spirit Revelation
+    broadcastEvent('spirit_response', {
+      code,
+      reason,
+      responseText: spiritResult.text,
+      audioFile: audioResult.audioFile,
+      disturbed: true,
+      coalesced: spiritResult.coalesced,
+    });
   },
+
   onDuplicate: ({ session, seq, raw }) => {
+    // Strictly per PROTOCOL.md: duplicate emits event without delivery, animation, or inference
     broadcastEvent('duplicate', { session, seq, raw });
   },
+
   onHello: ({ role, maxTextBytes, raw }) => {
     broadcastEvent('hello', { role, maxTextBytes, raw });
   },
+
   onProtocolError: ({ code, raw }) => {
     broadcastEvent('protocol_error', { code, raw });
   },
+
   onError: ({ code, raw }) => {
     broadcastEvent('error', { code, raw });
   },
+
   onStreamError: ({ type, line, error }) => {
     broadcastEvent('stream_error', { type, line, error: error.message });
   },
@@ -54,6 +105,7 @@ const MIME_TYPES = {
   '.json': 'application/json; charset=utf-8',
   '.png': 'image/png',
   '.svg': 'image/svg+xml',
+  '.wav': 'audio/wav',
 };
 
 const server = http.createServer((req, res) => {
@@ -156,6 +208,11 @@ const server = http.createServer((req, res) => {
       status: 'active',
       role: 'rx',
       connectedClients: sseClients.size,
+      qwen: {
+        host: qwen.host,
+        model: qwen.model,
+        lastValidText: qwen.lastValidText,
+      },
     }));
     return;
   }
@@ -191,4 +248,4 @@ server.listen(PORT, () => {
   console.log(`=======================================================`);
 });
 
-export { server, parser };
+export { server, parser, qwen, audio };
