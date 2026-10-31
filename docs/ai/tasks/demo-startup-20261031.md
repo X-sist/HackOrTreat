@@ -1,0 +1,37 @@
+# Beyond the Grave: real demo startup integration — 2026-10-31
+
+## Scope
+
+User requested checking a trial and integrating complete two-laptop demo instructions into README. Work is on local `integration/demo-startup`, based on main `05f6945`. No firmware, wire constants, generated files, consumer pins, dependency locks, models or owner task statuses changed. No microphone was recorded, no new model/software was installed, no message was sent over IR, and no remote laptop was accessed during this integration. No commit or push was made for this task.
+
+## What changed
+
+- Root README now names Beyond the Grave and provides explicit sender-versus-receiver steps, local runtime/model/voice requirements, real serial check/manual send/timed speech commands, sound activation, offline rehearsal and troubleshooting. It replaces the stale scaffold-only status without declaring the whole demo accepted.
+- `tools/demo_receiver.mjs` checks installed local Ollama tags, generates a warm-up reply, checks Piper by synthesizing a short WAV, starts the receiver server in live-demo mode, and forwards validated receiver serial events to its own loopback `/api/ingest` endpoint. Configurable COM/Piper/voice/web-port options; no npm dependencies added, network transport between laptops, model downloads, auto retries or simulated serial input. Local forwarding does not bypass IR: only bytes read from the local Rx Arduino enter this bridge.
+- `tools/read_receiver_serial.ps1` reads at most the shared event bound per serial read using Windows .NET at shared baud/8N1. It emits raw bytes to the parent and requests HELLO once after two seconds. Node frames/validates/bounds records and requires Rx hello within the shared boot deadline. Wrong-role boards are rejected; overflow is discarded through LF. Parent shutdown stops its own reader/server processes and releases the serial handle. No execution-policy changes are used.
+- Receiver supports installed Piper executable/model paths via environment, bounds the Piper subprocess to 30 seconds and handles stdin errors. Local Qwen timeout can be configured, now covers JSON body reading and is cleared on failure as well as success. The launcher warms Qwen and uses a 30-second generation bound.
+- Live-demo server mode binds to loopback, rejects simulation requests, bounds ingest batches to 1024 bytes, retains the last hello for a browser opened after serial discovery, and exposes mode/connection state. Model failure is a visible error rather than a canned spirit reply. Voice failure keeps the real generated text but reports missing speech rather than presenting a tone as voice. Coalesced requests do not synthesize or animate canned replies. These are local app/service events; no board protocol extension.
+- UI adds Enable sound using a user-resumed Web Audio context, visible service/playback errors, receiver-disconnection status, and hides simulation buttons in live-demo mode. Disturbance language no longer claims a specific physical cause from a generic error. Existing input/response separation and planchette remain.
+- Receiver fallback tests now deliberately use an unavailable loopback endpoint, so installing/running Ollama does not break tests that expect fallback behavior.
+
+## Actual verification
+
+- Sender verification: 51 tests pass, pip consistency and native imports pass.
+- Receiver verification: 49 parser assertions plus 20 pipeline assertions pass.
+- Five new Node integration tests pass: shared Rx fixtures/split reads, overflow/CRLF resynchronization, Tx refusal/non-ASCII rejection, handshake gating and no retry on HTTP failure, and actual server/SSE handling for generated text, missing voice, model failure, disabled simulation and oversized ingest. Model/serial in those tests are controlled fakes, not physical transfer evidence.
+- Generated-contract check, 15 packet/8 serial vectors, 10 root tests and 29 JS event fixtures pass. JavaScript syntax, PowerShell parsing and current diff whitespace checks pass.
+- Windows port listing through the new helper returns COM9 on this laptop. Actual COM9 boot hello was correctly rejected as Tx by the receiver bridge; no SEND was issued. Earlier sender identity check established Tx readiness on that port.
+- Actual local preflight found the local qwen2.5:1.5b service, completed warm-up generation, then correctly stopped because Piper's voice/JSON was not present at the default path on this sender laptop. No speech readiness is inferred for the receiver laptop. User reports Ollama/Qwen and Piper installed there but supplied no executable/voice paths or receiver run output. The README supports their actual paths and instructs the receiver to run `--check` first.
+- The saved sender offline result confirms exact synthetic local WAV transcription with software network denial, and explicitly records Wi-Fi not disabled. This is not a saved log of the user's latest physical send. User-provided live microphone/demo-phrase evidence and prior sender Gemini review are available in chat; the new integration changes are outside that earlier review.
+
+## Existing repository-check failure
+
+`python tools/check_repo.py` fails because tracked root `package.json` (and `package-lock.json`) were added before this integration in commit `4b8cdac`. Root manifests are forbidden by the existing workflow/checker. They were present at this task's clean starting HEAD and are unchanged here. The new launcher needs neither those packages nor an npm install. This failure was not hidden or bypassed; resolve the unrelated dependency placement with the owner before claiming the repository check is green.
+
+## Remaining demo acceptance
+
+Both laptops must receive the new source files; environments and models remain machine-local. On the receiver run the README's preflight with its installed Piper/voice paths, then the launcher on the actual Rx port. Open its local page and enable sound. Send a manual phrase, confirm the real input on the receiver and an actual generated/synthesized reply, then repeat with timed live speech. Run from fresh processes with networking disabled and test obstruction/recovery. None of that two-laptop receipt/audio/UI chain was observed by this agent in this task. Longer range and electrical documentation remain the firmware handoff's separate limitations.
+
+## Focused Gemini review handoff
+
+> Review the current uncommitted diff on integration/demo-startup in the usual HackOrTreat checkout. Read AGENTS.md, WORKFLOW.md, README.md and this handoff. Do not edit source, capture audio, open serial ports, install tools, commit or push. Inspect tools/demo_receiver.mjs, tools/read_receiver_serial.ps1, tools/tests/test_demo_receiver.mjs, receiver/src/server.mjs, qwen_inference.mjs, audio_engine.mjs and receiver/public changes. Check serial byte framing/role discovery/timeouts, process cleanup on failure/Ctrl+C, same-laptop-only forwarding, no fake responses in live mode, installed Piper path/voice handling, model timeout/voice failures, sound activation, and README command accuracy. Shared contract revision remains 1.0.0. Sender 51 tests, receiver 69 assertions and 5 integration tests pass; root repository checker has the pre-existing forbidden root-manifest failure described above. Real two-laptop demo and receiver voice installation have not been observed. Return actionable findings with evidence/reproduction or no actionable findings with explicit limits; do not implement in parallel.

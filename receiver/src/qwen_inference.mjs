@@ -13,7 +13,7 @@ export const DISTURBANCE_COOLDOWN_MS = CONTRACT.constants.DISTURBANCE_COOLDOWN_M
 export const SPIRIT_SYSTEM_PROMPT = `You are a spirit summoned through an antique Ouija board in an offline room.
 Wi-Fi is severed. Communication arrives through an invisible optical infrared beam.
 If the message contains corrupted text or disturbance details (<AETHER_DISTURBED>),
-the physical IR beam has been broken by a mortal! React with supernatural distress, declaring that the living have disrupted the link.
+the receiver reported a damaged or incomplete transmission. React in character, but do not claim a physical cause or invent the lost question.
 Otherwise, respond to mortal inquiries with brief, eerie, archaic prophecy.
 CRITICAL CONSTRAINT: Keep your response short (10 to 18 words maximum) so the physical planchette can spell it letter by letter without stalling.`;
 
@@ -21,7 +21,7 @@ export class QwenInference {
   constructor(options = {}) {
     this.host = options.host || process.env.OLLAMA_HOST || 'http://127.0.0.1:11434';
     this.model = options.model || process.env.OLLAMA_MODEL || 'qwen2.5:1.5b';
-    this.timeoutMs = options.timeoutMs || 8000;
+    this.timeoutMs = options.timeoutMs || Number(process.env.QWEN_TIMEOUT_MS || 8000);
 
     this.lastValidText = null;
     this.lastDisturbanceTimestamp = 0;
@@ -50,7 +50,7 @@ export class QwenInference {
   formatPrompt({ type, text, code, reason }) {
     if (type === 'disturbance') {
       const prior = this.lastValidText ? `"${this.lastValidText}"` : 'Unknown';
-      return `<AETHER_DISTURBED> Optical IR beam broken! Disruption Code: ${code || 'CHECKSUM_FAILED'}, Reason: ${reason || 'CRC_MISMATCH'}. Prior mortal query was ${prior}. React to this disruption!`;
+      return `<AETHER_DISTURBED> Damaged or incomplete transmission. Disruption Code: ${code || 'CHECKSUM_FAILED'}, Reason: ${reason || 'CRC_MISMATCH'}. Prior mortal query was ${prior}. React to this disruption!`;
     }
     return `MORTAL QUERY: "${text || ''}"`;
   }
@@ -91,9 +91,10 @@ export class QwenInference {
     this.isGenerating = true;
     const prompt = this.formatPrompt(params);
 
+    let timeoutId;
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), this.timeoutMs);
+      timeoutId = setTimeout(() => controller.abort(), this.timeoutMs);
 
       const res = await fetch(`${this.host}/api/generate`, {
         method: 'POST',
@@ -106,8 +107,6 @@ export class QwenInference {
         }),
         signal: controller.signal,
       });
-
-      clearTimeout(timeoutId);
 
       if (!res.ok) {
         throw new Error(`HTTP ${res.status}: ${res.statusText}`);
@@ -136,6 +135,7 @@ export class QwenInference {
         error: err.message,
       };
     } finally {
+      clearTimeout(timeoutId);
       this.isGenerating = false;
     }
   }

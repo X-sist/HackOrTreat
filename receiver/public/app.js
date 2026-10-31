@@ -26,7 +26,8 @@ const aetherStatusText = document.getElementById('aetherStatusText');
 const targetElements = new Map();
 let isSpelling = false;
 let spellingQueue = [];
-let audioPlayer = new Audio();
+let audioContext = null;
+let voiceSource = null;
 
 function initBoard() {
   arcTop.innerHTML = '';
@@ -156,7 +157,7 @@ function triggerDisturbanceVisuals(code, reason) {
   glitchOverlay.classList.add('disturbed');
   disturbanceBanner.classList.add('active');
   disturbanceCodeText.textContent = `${code}: ${reason}`;
-  disturbanceReasonText.textContent = `A mortal has broken the optical infrared beam.`;
+  disturbanceReasonText.textContent = `The receiver reported a damaged or incomplete transmission.`;
 
   aetherStatusText.textContent = 'Aether: DISTURBED';
   const aetherPill = document.getElementById('aetherPill');
@@ -164,7 +165,7 @@ function triggerDisturbanceVisuals(code, reason) {
   dot.className = 'indicator-dot dot-red';
 
   playDisturbanceTone();
-  logMessage(`[TRANSPORT ERROR] ${code} (${reason}) — Beam disrupted!`, 'disturbed');
+  logMessage(`[TRANSPORT ERROR] ${code} (${reason}) — Transmission disturbed!`, 'disturbed');
 
   setTimeout(() => {
     glitchOverlay.classList.remove('disturbed');
@@ -202,14 +203,31 @@ function playDisturbanceTone() {
   } catch {}
 }
 
-function playAudioFile(url) {
-  if (!url) return;
+async function enableSound() {
   try {
-    audioPlayer.src = url + '?t=' + Date.now();
-    audioPlayer.play().catch(() => {
-      // Audio autoplay policy may require a prior user gesture
-    });
-  } catch {}
+    audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
+    await audioContext.resume();
+    document.getElementById('enableSound').textContent = 'Sound enabled';
+    logMessage('Sound enabled. Keep speakers on for the spirit response.', 'system');
+  } catch (error) { logMessage(`Sound error: ${error.message}`, 'disturbed'); }
+}
+
+async function playAudioFile(url) {
+  if (!url) return;
+  if (!audioContext || audioContext.state !== 'running') {
+    logMessage('Click Enable sound before sending the next question.', 'system');
+    return;
+  }
+  try {
+    const response = await fetch(url + '?t=' + Date.now());
+    if (!response.ok) throw new Error('Speech audio could not be loaded.');
+    const buffer = await audioContext.decodeAudioData(await response.arrayBuffer());
+    voiceSource?.stop();
+    voiceSource = audioContext.createBufferSource();
+    voiceSource.buffer = buffer;
+    voiceSource.connect(audioContext.destination);
+    voiceSource.start();
+  } catch (error) { logMessage(`Speech playback error: ${error.message}`, 'disturbed'); }
 }
 
 async function triggerSimulate(type, text = '') {
@@ -230,6 +248,20 @@ function connectSSE() {
 
   eventSource.addEventListener('connected', () => {
     logMessage('[SSE] Linked to Receiver Stream Server.', 'system');
+  });
+
+  eventSource.onerror = () => {
+    serialStatusText.textContent = 'Receiver connection unavailable';
+    document.querySelector('#serialPill .indicator-dot').className = 'indicator-dot dot-red';
+  };
+
+  eventSource.addEventListener('service_error', e => {
+    const data = JSON.parse(e.data);
+    logMessage(`${data.source} error: ${data.message}`, 'disturbed');
+    currentLetterDisplay.textContent = 'Response unavailable: check receiver terminal';
+  });
+  eventSource.addEventListener('service_notice', e => {
+    logMessage(JSON.parse(e.data).message, 'system');
   });
 
   eventSource.addEventListener('hello', (e) => {
@@ -257,6 +289,7 @@ function connectSSE() {
     if (data.offlineNotice) {
       logMessage(`[NOTE] ${data.offlineNotice}`, 'system');
     }
+    if (data.audioNotice) logMessage(data.audioNotice, 'system');
     // Play voice audio
     if (data.audioFile) {
       playAudioFile(data.audioFile);
@@ -288,6 +321,10 @@ function connectSSE() {
 
 window.addEventListener('DOMContentLoaded', () => {
   initBoard();
+  document.getElementById('enableSound').addEventListener('click', enableSound);
+  fetch('/api/status').then(r => r.json()).then(status => {
+    if (status.demoMode) document.querySelector('.simulation-controls').style.display = 'none';
+  }).catch(() => {});
   connectSSE();
 });
 

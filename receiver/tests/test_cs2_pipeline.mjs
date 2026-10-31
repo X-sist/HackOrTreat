@@ -22,7 +22,7 @@ console.log('--- Running CS2 Full Pipeline Tests (T09, T10, T11) ---');
 // T09: Qwen Offline Inference Tests
 // =========================================================================
 {
-  const qwen = new QwenInference();
+  const qwen = new QwenInference({ host: 'http://127.0.0.1:1' }); // Deliberately unavailable; never depends on a running local model.
 
   // Test 1: Record valid message
   qwen.recordValidMessage('Spirit, what is your name?');

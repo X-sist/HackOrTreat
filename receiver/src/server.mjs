@@ -12,6 +12,8 @@ const PUBLIC_DIR = path.join(__dirname, '../public');
 
 const PORT = parseInt(process.env.PORT || '3000', 10);
 const sseClients = new Set();
+const DEMO_MODE = process.env.DEMO_MODE === '1';
+let lastHello = null;
 
 function broadcastEvent(type, payload) {
   const message = `event: ${type}\ndata: ${JSON.stringify({ ...payload, timestamp: new Date().toISOString() })}\n\n`;
@@ -30,50 +32,15 @@ const audio = new AudioEngine();
 
 // Instantiate StreamParser wired to Qwen and Audio pipelines
 const parser = new StreamParser({
-  onMessage: async ({ session, seq, text, raw }) => {
-    // 1. Separate Input Status
+  onMessage: ({ session, seq, text, raw }) => {
     broadcastEvent('input_received', { session, seq, text, raw });
     qwen.recordValidMessage(text);
-
-    // 2. Qwen Local Offline Inference (T09)
-    broadcastEvent('spirit_thinking', { stage: 'invoking_qwen' });
-    const spiritResult = await qwen.generateResponse({ type: 'message', text });
-
-    // 3. Audio Synthesis (T10)
-    const audioResult = await audio.synthesize(spiritResult.text);
-
-    // 4. Spirit Response Output (T11 separation)
-    broadcastEvent('spirit_response', {
-      session,
-      seq,
-      promptText: text,
-      responseText: spiritResult.text,
-      offlineNotice: spiritResult.offline ? 'Operating in offline model fallback mode.' : undefined,
-      audioFile: audioResult.audioFile,
-      disturbed: false,
-    });
+    void respond({ type: 'message', text }, { session, seq, promptText: text, disturbed: false });
   },
 
-  onDisturbance: async ({ code, reason, session, seq, raw }) => {
-    // 1. Real Transport Error Event
+  onDisturbance: ({ code, reason, session, seq, raw }) => {
     broadcastEvent('disturbance', { code, reason, session, seq, raw });
-
-    // 2. Disturbance-Triggered Spirit Response (throttled per PROTOCOL.md)
-    broadcastEvent('spirit_thinking', { stage: 'channeling_disturbed' });
-    const spiritResult = await qwen.generateResponse({ type: 'disturbance', code, reason });
-
-    // 3. Spooky Audio Synthesis
-    const audioResult = await audio.synthesize(spiritResult.text, { disturbed: true });
-
-    // 4. Broadcast Spirit Revelation
-    broadcastEvent('spirit_response', {
-      code,
-      reason,
-      responseText: spiritResult.text,
-      audioFile: audioResult.audioFile,
-      disturbed: true,
-      coalesced: spiritResult.coalesced,
-    });
+    void respond({ type: 'disturbance', code, reason }, { code, reason, disturbed: true });
   },
 
   onDuplicate: ({ session, seq, raw }) => {
@@ -82,6 +49,9 @@ const parser = new StreamParser({
   },
 
   onHello: ({ role, maxTextBytes, raw }) => {
+    lastHello = { role, maxTextBytes, raw };
+    qwen.lastValidText = null;
+    qwen.lastDisturbanceTimestamp = 0;
     broadcastEvent('hello', { role, maxTextBytes, raw });
   },
 
@@ -97,6 +67,33 @@ const parser = new StreamParser({
     broadcastEvent('stream_error', { type, line, error: error.message });
   },
 });
+
+async function respond(request, metadata) {
+  try {
+    broadcastEvent('spirit_thinking', { stage: 'invoking_qwen' });
+    const result = await qwen.generateResponse(request);
+    if (result.coalesced) {
+      broadcastEvent('service_notice', { message: 'Spirit request skipped while busy or during disturbance cooldown.' });
+      return;
+    }
+    if (DEMO_MODE && result.offline) {
+      broadcastEvent('service_error', { source: 'Ollama', message: result.error || 'No generated response. Check the local model service.' });
+      return;
+    }
+    const voice = await audio.synthesize(result.text, { disturbed: metadata.disturbed });
+    if (!voice.success || (DEMO_MODE && !voice.usedPiper)) {
+      broadcastEvent('service_error', { source: 'Piper', message: voice.error || voice.honestNotice || 'Speech synthesis failed.' });
+    }
+    broadcastEvent('spirit_response', {
+      ...metadata, responseText: result.text,
+      audioFile: voice.success && (!DEMO_MODE || voice.usedPiper) ? voice.audioFile : undefined,
+      offlineNotice: result.offline ? 'Canned diagnostic fallback; no model response was generated.' : undefined,
+      audioNotice: voice.honestNotice,
+    });
+  } catch (error) {
+    broadcastEvent('service_error', { source: 'Receiver', message: error.message });
+  }
+}
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -122,6 +119,7 @@ const server = http.createServer((req, res) => {
     });
     res.write(`event: connected\ndata: ${JSON.stringify({ status: 'ok', role: 'rx' })}\n\n`);
     sseClients.add(res);
+    if (lastHello) res.write(`event: hello\ndata: ${JSON.stringify(lastHello)}\n\n`);
 
     req.on('close', () => {
       sseClients.delete(res);
@@ -132,8 +130,16 @@ const server = http.createServer((req, res) => {
   // API: Ingest raw NDJSON bytes from external stream or serial forwarder
   if (pathname === '/api/ingest' && req.method === 'POST') {
     let body = '';
-    req.on('data', chunk => { body += chunk; });
+    let overflow = false;
+    req.on('data', chunk => {
+      if (overflow) return;
+      if (Buffer.byteLength(body) + chunk.length > 1024) {
+        overflow = true; body = ''; res.writeHead(413); res.end('Event batch too large'); return;
+      }
+      body += chunk;
+    });
     req.on('end', () => {
+      if (overflow) return;
       parser.push(body);
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ success: true, bytesReceived: body.length }));
@@ -143,6 +149,7 @@ const server = http.createServer((req, res) => {
 
   // API: Simulate demo events
   if (pathname === '/api/simulate' && req.method === 'POST') {
+    if (DEMO_MODE) { res.writeHead(403); res.end('Simulation disabled for the real demo'); return; }
     let body = '';
     req.on('data', chunk => { body += chunk; });
     req.on('end', () => {
@@ -206,6 +213,8 @@ const server = http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({
       status: 'active',
+      demoMode: DEMO_MODE,
+      serialConnected: Boolean(lastHello),
       role: 'rx',
       connectedClients: sseClients.size,
       qwen: {
@@ -239,7 +248,7 @@ const server = http.createServer((req, res) => {
   });
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, '127.0.0.1', () => {
   console.log(`=======================================================`);
   console.log(`  HACKORTREAT RECEIVER — OUIJA SPIRIT PLANE (CS2)      `);
   console.log(`  Web Display: http://localhost:${PORT}               `);

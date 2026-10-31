@@ -20,8 +20,8 @@ export class AudioEngine {
     this.maxQueueSize = options.maxQueueSize || 1;
     this.queue = [];
     this.isProcessing = false;
-    this.piperPath = options.piperPath || 'piper';
-    this.modelPath = options.modelPath || path.resolve(__dirname, '../models/piper/en_US-lessac-medium.onnx');
+    this.piperPath = options.piperPath || process.env.PIPER_EXE || 'piper';
+    this.modelPath = options.modelPath || process.env.PIPER_MODEL || path.resolve(__dirname, '../models/piper/en_US-lessac-medium.onnx');
 
     // Ensure audio output directory exists
     if (!fs.existsSync(AUDIO_OUTPUT_DIR)) {
@@ -70,9 +70,11 @@ export class AudioEngine {
           await new Promise((res, rej) => {
             const child = execFile(
               this.piperPath,
-              ['--model', this.modelPath, '--output_file', outputFile],
+              ['-m', this.modelPath, '-f', outputFile],
+              { timeout: 30000, windowsHide: true, maxBuffer: 1024 * 1024 },
               (err) => { if (err) rej(err); else res(); }
             );
+            child.stdin.on('error', () => {});
             child.stdin.write(text);
             child.stdin.end();
           });

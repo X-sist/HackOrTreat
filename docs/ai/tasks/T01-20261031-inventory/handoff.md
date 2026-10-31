@@ -4,7 +4,7 @@
 Inventory accessible hardware, OS, installed tools/models, and supplied official rules. Save observations, evidence, unknowns, and blockers without installing or implementing anything. Inventory is complete; device readiness and award eligibility remain unverified.
 
 ## Scope and repository state
-- Repository: HackOrTreat, local checkout under `C:/Users/aiden/OneDrive/Documents/GitHub/HackOrTreat`.
+- Repository: HackOrTreat, local checkout under `<REPO_ROOT>`.
 - Starting commit: `107826d7d84a1379e995e531d4fb665ffdc67387`.
 - Starting working tree: clean according to `git status --short`.
 - No commits, pushes, stashes, resets, installations, or app implementation performed for T01.

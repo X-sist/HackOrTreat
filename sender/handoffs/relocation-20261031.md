@@ -2,7 +2,7 @@
 
 The user requested that the sender work appear in the usual Source Control repository and be accessible to Antigravity.
 
-Current repo: C:/Users/aiden/OneDrive/Documents/GitHub/HackOrTreat
+Current repo: <REPO_ROOT>
 Current local branch: sender/C1-02-microphone
 
 The usual repo was clean. The sender branch was released from the separate worktree, checked out here, and fast-forwarded to current main (1f568203870a92f3998625f80d2ed319f26010c9). Sender source files were identical between the two committed bases. Uncommitted sender changes and local model/wheel/sample caches were copied here and hash-verified. The Python environment was recreated here from the exact offline lock rather than moving a path-bound venv.
