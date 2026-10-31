@@ -1,0 +1,5 @@
+{
+  "status": "unconfigured",
+  "python": null,
+  "note": "Select and test an exact supported interpreter in the component implementation task; current machine Python3.14 is not assumed compatible."
+}

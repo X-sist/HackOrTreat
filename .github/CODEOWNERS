@@ -1,0 +1,9 @@
+# Supplied handles; verify write access before relying on requests.
+# Last matching pattern wins. Multiple owners request review; not all are required by this file.
+* @Aiden360-stack @Xsist @volyxge
+/sender/ @Aiden360-stack
+/receiver/ @Xsist
+/firmware/ @volyxge
+/sender/contract.lock.json @Aiden360-stack @Xsist @volyxge
+/receiver/contract.lock.json @Aiden360-stack @Xsist @volyxge
+/firmware/contract.lock.json @Aiden360-stack @Xsist @volyxge

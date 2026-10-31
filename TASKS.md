@@ -1,35 +1,25 @@
-# Small-task roadmap
+# Team task index
+This is an integration-owned index, not a tracker all three people edit. Component files below are the sole live task-status sources. Prior broad roadmap: docs/reference/previous-roadmap.md (historical only).
 
-Statuses below reflect recorded task evidence. Update a status only with evidence from the repository or actual verification. Do one task per request, then stop with results, unresolved items, and a suggested next task. Do not install models, implement firmware, and build UI in one prompt. Split a task further if it becomes too broad. Completion of mocks does not mean hardware or offline acceptance passed.
+| Person | Own workspace / task tracker | Next independent task |
+| --- | --- | --- |
+| @volyxge — CE | [firmware/TASKS.md](firmware/TASKS.md) | T04: Tx firmware/hardware validation |
+| @Aiden360-stack — CS1 | [sender/TASKS.md](sender/TASKS.md) | C1-01: offline Whisper preparation |
+| @Xsist — CS2 | [receiver/TASKS.md](receiver/TASKS.md) | T03: event parser/plain-text output |
 
-| ID | Status | Depends on | Bounded task and completion evidence |
-| --- | --- | --- | --- |
-| T01 | complete (unknowns recorded) | — | Inventory actual hardware, OS, installed tools/models, and supplied official hackathon rules. Save confirmed facts, unknowns, sources, and blockers. Do not install dependencies or claim award eligibility without rules. Unknown facts may remain explicitly unresolved. |
-| T02 | pending | T01 | Specify one-way IR packet and serial event contracts. Include example valid, checksum-failure, partial-timeout, duplicate, and oversized cases. Decide whether idle heartbeat detection is required; record event semantics and limits. No firmware or full app yet. |
-| U01 | pending | T01, T02 | Define sender/receiver screen sketches, actions/states, local UI/service event and command contracts, mock/live boundary, target OS, desktop framework decision, and service lifecycle/packaging plan. Electron is provisional. Design/contracts only; no full app. |
-| U02 | pending | U01 | Implement minimal desktop shell with sender/receiver mode selection, transcript editing/manual send, plain-text receiver, connection/errors, and collapsible diagnostics using visible mock mode. Render both screens and verify interactions. No real hardware, model, audio, or decorative art. |
-| T03 | pending | T02, U02 | Build the receiver event parser and connect fixture/mock serial input to the desktop receiver screen through the U01 contract. Check split reads, multiple lines, malformed/oversized records, and distinct disturbance states. No LLM, audio, or art. |
-| T04 | pending | T02 | Implement Arduino A sender firmware and local serial pacing/status on the confirmed board/parts. Send a fixed text frame. Record compile evidence and any physical tests; mark unavailable hardware checks blocked. |
-| T05 | pending | T02, T04 | Implement Arduino B receive/validate firmware. Demonstrate fixed text over real IR and recovery after an interrupted frame. Distinguish real checksum failure, incomplete timeout, and silence. Hardware evidence required for completion. |
-| T06 | pending | T03, T04, T05 | Connect manual text entry on Laptop 1 through USB/IR to the plain-text display on Laptop 2. Check ordering, pacing, bounds, and recovery. No speech or model yet. Record real two-machine evidence. |
-| T07 | pending | T01, T02 | Add offline STT and local transcript display on Laptop 1 using one selected implementation. Verify local artifacts and fresh-process transcription with Wi-Fi disabled. No IR integration in this task. |
-| T08 | pending | T06, T07 | Connect bounded STT output to the sender. Demonstrate speech-to-text-to-IR-to-received-text offline. This is the minimum demo milestone. |
-| T09 | pending | T03, T01 | Required for the award-targeted demo: follow SOFTWARE-REQUIREMENTS.md, verify the exact preferred Qwen2.5-1.5B-Instruct artifact, revision/digest, license notices, and runtime identifier; add local Ollama/Qwen adapter using validated text or explicit disturbance fixtures. Keep raw received text visible and model output separate. Test local startup, timeouts, unavailable model, short responses, and provenance. No audio/UI animation. |
-| T10 | pending | T09 | Add offline Piper speech playback with a bounded single-response queue and graceful errors. Verify voice files/license and intelligibility; add distortion only if reliable playback remains intact. |
-| T11 | pending | T03, T09 | Add locally bundled Ouija board and planchette animation driven by response text. Test spaces, punctuation, cancellation, repeat responses, and readable transport errors. No CDN assets. |
-| T12 | pending | T08, T09, T10, T11 | Integrate the theatrical receiver flow. Begin animation during speech generation, avoid overlapping voices, and keep transport/error text honest. Exercise valid and disturbed physical transmissions. |
-| U03 | pending | T12 | Package the desktop app for both demo machines with sender/receiver setup instructions. Verify launch without a development server, local artifact discovery, microphone/serial access, missing-dependency feedback, and clean service shutdown. Record bundled versus preinstalled dependencies; no online installer at demo time. |
-| T13 | pending | T12, U03 | Run the packaged desktop apps on both machines offline from fresh processes, including a judge breaking the beam during a frame. Verify mock mode is off. Record commands, versions, licenses, timings, failures, and readiness against verified rules. Document remaining blockers instead of claiming a pass. |
+All can proceed independently against the v1 contract/fixtures. A generic "next task" uses the selected component or branch prefix, never another person's queue. This chat's user works as sender; the shared root agent instructions do not force every teammate into that role.
 
-Parallel candidates after T02: host parser (T03), sender firmware (T04), and STT (T07) can proceed under distinct human owners. Model adapter T09 can use parser fixtures after T03. Software agents still follow MULTI-AGENT.md and require authorization before delegation. Keep shared protocol/config changes under one coordinator; integration tasks wait for their dependencies.
+Shared completed design/inventory: T01 (unknowns recorded) and T02 (design checked, physical validation and Gemini review pending). Evidence remains under docs/ai/tasks/. No application task has been implemented by the collaboration setup.
 
-Desktop task integration: U01/U02 establish UI early while independent firmware and STT tasks can progress under the ownership rules. T03 waits for U02. T06 connects sender desktop manual input to receiver desktop plain text; T08 connects desktop microphone controls/transcript to real transmission. T09/T10/T11/T12 add model, speech, and visual behavior through adapters in that same app. U03 packages it before rehearsal. Existing T IDs are preserved. Table order places U01/U02 before T03 for a normal "next task" request; explicit independent tasks still use their listed dependencies.
+Integration milestones (one agreed integrator updates these only):
 
-Suggested prompts:
-- "Do T01 only for HackOrTreat. Record confirmed facts and unknowns; do not install anything or build the app."
-- "Do the next ready task only. Follow PROJECT-BRIEF.md and TASKS.md, verify the result, update evidence, and stop."
-- "Review the implementation of T02 only against the project brief; return actionable findings without editing code."
+| ID | Status | Evidence needed |
+| --- | --- | --- |
+| T06 | pending | Sender manual text -> CE physical IR -> CS2 received plain text |
+| T07 | pending | C1-01/C1-02 real offline Whisper + CLI evidence |
+| T08 | pending | Sender speech -> actual two-machine text transfer |
+| T12 | pending | T08 + live local Qwen/audio/visual receiver integration |
+| T13 | pending | Fresh-process full offline team rehearsal, real beam obstruction, provenance and rules review |
+| U01/U02/U03 | deferred | Optional later shared desktop design/shell/packaging; no CLI prerequisite |
 
-The roadmap is intentionally more granular than the three human roles in the blueprint. Each task is a prompt boundary, not a promise that it takes a fixed number of minutes. When the user selects a task with unmet dependencies, explain the concrete missing contract or evidence and complete only independent work inside that task if useful.
-
-T01 evidence: [inventory and blockers](docs/ai/tasks/T01-20261031-inventory/inventory.md), collected October 31, 2026. Updated with user-confirmed Uno R3/V1221/V1222 identities, identical demo-laptop report, and verified public category sources in SOFTWARE-REQUIREMENTS.md. Runtime/physical readiness, second-machine environment, and remaining organizer policies are unverified.
+For integration choose an `integration/<milestone>` branch and review the changed interfaces with affected owners. Never mark shared milestones complete from mocks alone.

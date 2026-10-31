@@ -1,0 +1,7 @@
+{
+  "serial_port": null,
+  "ollama_url": "http://127.0.0.1:11434",
+  "model_id": null,
+  "piper_voice_path": null,
+  "note": "Copy to ignored config.local.json; no credentials or inter-laptop network endpoints."
+}

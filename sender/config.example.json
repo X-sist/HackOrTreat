@@ -1,0 +1,6 @@
+{
+  "serial_port": null,
+  "microphone_device": null,
+  "whisper_model_path": null,
+  "note": "Copy to ignored config.local.json; baud/limits come from shared contract."
+}

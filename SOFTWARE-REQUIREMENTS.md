@@ -22,7 +22,7 @@ These are our acceptance criteria, not additional rules attributed to MLH:
 | SW02 | Preferred baseline is Qwen2.5-1.5B-Instruct, with a locally stored Q4_K_M artifact if supported | Exact origin, revision, filename/digest, quantization, runtime model identifier, and successful local load recorded in T09; no download performed by this requirements task |
 | SW03 | Offline inference and speech | Local STT, LLM, TTS/voice/configuration, assets, and dependencies present; fresh startup with network unavailable; no cloud fallback |
 | SW04 | Real one-way physical transport | Actual Uno R3 transmitter/receiver path transfers text; no second IR channel or network payload bridge; separate mock mode is explicit and off for acceptance |
-| SW05 | Desktop experience on both laptops | Sender and receiver modes, local-only assets, real diagnostics, packaged startup without a development server, and clean service lifecycle |
+| SW05 | Team MVP first; desktop enhancement deferred | Python sender CLI plus receiver service/local visual space run offline with clear diagnostics/startup/shutdown; shared desktop shell packaging follows later if selected. This is a team product choice, not a published award requirement. |
 | SW06 | Reproducibility and provenance | Versions, model/voice/asset origins and licenses, required notices, preparation/startup instructions, and bounded verification evidence; review licenses before redistributing artifacts |
 | SW07 | Honest submission and demo | Identify the original contribution, the model's essential role, known limitations, and development tools used; confirm any additional organizer submission rules |
 

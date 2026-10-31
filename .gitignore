@@ -1,0 +1,18 @@
+# Component-local state; never shared runtime data or environments
+**/.venv/
+**/node_modules/
+**/__pycache__/
+*.py[cod]
+**/.local/
+**/config.local.json
+**/.env
+**/.env.*
+!**/.env.example
+**/models/
+**/wheelhouse/
+**/build/
+**/dist/
+*.gguf
+*.onnx
+*.onnx.json
+*.safetensors

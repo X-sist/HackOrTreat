@@ -1,0 +1,341 @@
+[
+  {
+    "id": "valid-message",
+    "role": "rx",
+    "valid": true,
+    "value": {
+      "v": 1,
+      "event": "message",
+      "session": "12345678",
+      "seq": 1,
+      "payload_hex": "4869"
+    }
+  },
+  {
+    "id": "hello-tx",
+    "role": "tx",
+    "valid": true,
+    "value": {
+      "v": 1,
+      "event": "hello",
+      "role": "tx",
+      "max_text_bytes": 48
+    }
+  },
+  {
+    "id": "hello-rx",
+    "role": "rx",
+    "valid": true,
+    "value": {
+      "v": 1,
+      "event": "hello",
+      "role": "rx",
+      "max_text_bytes": 48
+    }
+  },
+  {
+    "id": "valid-ready",
+    "role": "tx",
+    "valid": true,
+    "value": {
+      "v": 1,
+      "event": "ready"
+    }
+  },
+  {
+    "id": "valid-error",
+    "role": "tx",
+    "valid": true,
+    "value": {
+      "v": 1,
+      "event": "error",
+      "code": "BUSY"
+    }
+  },
+  {
+    "id": "valid-crc-failure",
+    "role": "rx",
+    "valid": true,
+    "value": {
+      "v": 1,
+      "event": "disturbance",
+      "code": "CHECKSUM_FAILED",
+      "reason": "CRC_MISMATCH",
+      "session": null,
+      "seq": null
+    }
+  },
+  {
+    "id": "invalid-v-6",
+    "role": "rx",
+    "valid": false,
+    "value": {
+      "v": 2,
+      "event": "message",
+      "session": "12345678",
+      "seq": 1,
+      "payload_hex": "4869"
+    }
+  },
+  {
+    "id": "invalid-seq-7",
+    "role": "rx",
+    "valid": false,
+    "value": {
+      "v": 1,
+      "event": "message",
+      "session": "12345678",
+      "seq": true,
+      "payload_hex": "4869"
+    }
+  },
+  {
+    "id": "invalid-seq-8",
+    "role": "rx",
+    "valid": false,
+    "value": {
+      "v": 1,
+      "event": "message",
+      "session": "12345678",
+      "seq": -1,
+      "payload_hex": "4869"
+    }
+  },
+  {
+    "id": "invalid-seq-9",
+    "role": "rx",
+    "valid": false,
+    "value": {
+      "v": 1,
+      "event": "message",
+      "session": "12345678",
+      "seq": 65536,
+      "payload_hex": "4869"
+    }
+  },
+  {
+    "id": "invalid-session-10",
+    "role": "rx",
+    "valid": false,
+    "value": {
+      "v": 1,
+      "event": "message",
+      "session": "1234abcd",
+      "seq": 1,
+      "payload_hex": "4869"
+    }
+  },
+  {
+    "id": "invalid-payload_hex-11",
+    "role": "rx",
+    "valid": false,
+    "value": {
+      "v": 1,
+      "event": "message",
+      "session": "12345678",
+      "seq": 1,
+      "payload_hex": "4"
+    }
+  },
+  {
+    "id": "invalid-payload_hex-12",
+    "role": "rx",
+    "valid": false,
+    "value": {
+      "v": 1,
+      "event": "message",
+      "session": "12345678",
+      "seq": 1,
+      "payload_hex": "0A"
+    }
+  },
+  {
+    "id": "invalid-payload_hex-13",
+    "role": "rx",
+    "valid": false,
+    "value": {
+      "v": 1,
+      "event": "message",
+      "session": "12345678",
+      "seq": 1,
+      "payload_hex": "20"
+    }
+  },
+  {
+    "id": "invalid-payload_hex-14",
+    "role": "rx",
+    "valid": false,
+    "value": {
+      "v": 1,
+      "event": "message",
+      "session": "12345678",
+      "seq": 1,
+      "payload_hex": "41414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141"
+    }
+  },
+  {
+    "id": "invalid-payload_hex-15",
+    "role": "rx",
+    "valid": false,
+    "value": {
+      "v": 1,
+      "event": "message",
+      "session": "12345678",
+      "seq": 1,
+      "payload_hex": "\u00e9"
+    }
+  },
+  {
+    "id": "extra-untrusted-text",
+    "role": "rx",
+    "valid": false,
+    "value": {
+      "v": 1,
+      "event": "message",
+      "session": "12345678",
+      "seq": 1,
+      "payload_hex": "4869",
+      "text": "unvalidated"
+    }
+  },
+  {
+    "id": "renamed-field",
+    "role": "rx",
+    "valid": false,
+    "value": {
+      "v": 1,
+      "event": "message",
+      "session": "12345678",
+      "seq": 1,
+      "payload": "4869"
+    }
+  },
+  {
+    "id": "wrong-role",
+    "role": "tx",
+    "valid": false,
+    "value": {
+      "v": 1,
+      "event": "message",
+      "session": "12345678",
+      "seq": 1,
+      "payload_hex": "4869"
+    }
+  },
+  {
+    "id": "wrong-disturbance-reason",
+    "role": "rx",
+    "valid": false,
+    "value": {
+      "v": 1,
+      "event": "disturbance",
+      "code": "CHECKSUM_FAILED",
+      "reason": "RESTART",
+      "session": null,
+      "seq": null
+    }
+  },
+  {
+    "id": "untrusted-disturbance-identity",
+    "role": "rx",
+    "valid": false,
+    "value": {
+      "v": 1,
+      "event": "disturbance",
+      "code": "CHECKSUM_FAILED",
+      "reason": "CRC_MISMATCH",
+      "session": "12345678",
+      "seq": 1
+    }
+  },
+  {
+    "id": "unknown-event",
+    "role": "rx",
+    "valid": false,
+    "value": {
+      "v": 1,
+      "event": "__proto__"
+    }
+  },
+  {
+    "id": "wrong-hello-limit",
+    "role": "tx",
+    "valid": false,
+    "value": {
+      "v": 1,
+      "event": "hello",
+      "role": "tx",
+      "max_text_bytes": 64
+    }
+  },
+  {
+    "id": "unknown-error-code",
+    "role": "tx",
+    "valid": false,
+    "value": {
+      "v": 1,
+      "event": "error",
+      "code": "DELIVERED_REMOTELY"
+    }
+  },
+  {
+    "id": "non-string-event",
+    "role": "tx",
+    "valid": false,
+    "value": {
+      "v": 1,
+      "event": [
+        "ready"
+      ]
+    }
+  },
+  {
+    "id": "missing-payload",
+    "role": "rx",
+    "valid": false,
+    "value": {
+      "v": 1,
+      "event": "message",
+      "session": "12345678",
+      "seq": 1
+    }
+  },
+  {
+    "id": "invalid-array-code",
+    "role": "rx",
+    "valid": false,
+    "value": {
+      "v": 1,
+      "event": "disturbance",
+      "code": [
+        "CHECKSUM_FAILED"
+      ],
+      "reason": "CRC_MISMATCH",
+      "session": null,
+      "seq": null
+    }
+  },
+  {
+    "id": "valid-integral-json-numbers",
+    "role": "rx",
+    "valid": true,
+    "value": {
+      "v": 1.0,
+      "event": "message",
+      "session": "12345678",
+      "seq": 1.0,
+      "payload_hex": "4869"
+    }
+  },
+  {
+    "id": "valid-integral-hello-limit",
+    "role": "tx",
+    "valid": true,
+    "value": {
+      "v": 1,
+      "event": "hello",
+      "role": "tx",
+      "max_text_bytes": 48.0
+    }
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "status": "unconfigured",
+  "fqbn": "arduino:avr:uno",
+  "arduino_cli": null,
+  "avr_core": null,
+  "libraries": [],
+  "note": "CE pins exact tooling/core/libraries in T04; no sketch or compiler installed by this setup."
+}

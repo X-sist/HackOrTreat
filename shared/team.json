@@ -1,0 +1,5 @@
+{
+  "firmware": {"github": "volyxge", "major": "CE"},
+  "sender": {"github": "Aiden360-stack", "major": "CS1"},
+  "receiver": {"github": "Xsist", "major": "CS2"}
+}

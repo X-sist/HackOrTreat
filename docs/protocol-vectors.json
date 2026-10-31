@@ -1,0 +1,819 @@
+{
+  "contract_version": 1,
+  "max_text_bytes": 48,
+  "crc_check": {
+    "ascii": "123456789",
+    "crc_hex": "29B1"
+  },
+  "packet_cases": [
+    {
+      "id": "valid-hi",
+      "packet_hex": "0101123456780001024869DD79",
+      "symbols": [
+        {
+          "at_ms": 0,
+          "address_hex": "A700",
+          "command_hex": "01"
+        },
+        {
+          "at_ms": 120,
+          "address_hex": "A701",
+          "command_hex": "01"
+        },
+        {
+          "at_ms": 240,
+          "address_hex": "A702",
+          "command_hex": "12"
+        },
+        {
+          "at_ms": 360,
+          "address_hex": "A703",
+          "command_hex": "34"
+        },
+        {
+          "at_ms": 480,
+          "address_hex": "A704",
+          "command_hex": "56"
+        },
+        {
+          "at_ms": 600,
+          "address_hex": "A705",
+          "command_hex": "78"
+        },
+        {
+          "at_ms": 720,
+          "address_hex": "A706",
+          "command_hex": "00"
+        },
+        {
+          "at_ms": 840,
+          "address_hex": "A707",
+          "command_hex": "01"
+        },
+        {
+          "at_ms": 960,
+          "address_hex": "A708",
+          "command_hex": "02"
+        },
+        {
+          "at_ms": 1080,
+          "address_hex": "A709",
+          "command_hex": "48"
+        },
+        {
+          "at_ms": 1200,
+          "address_hex": "A70A",
+          "command_hex": "69"
+        },
+        {
+          "at_ms": 1320,
+          "address_hex": "A70B",
+          "command_hex": "DD"
+        },
+        {
+          "at_ms": 1440,
+          "address_hex": "A70C",
+          "command_hex": "79"
+        }
+      ],
+      "expected_events": [
+        {
+          "v": 1,
+          "event": "message",
+          "session": "12345678",
+          "seq": 1,
+          "payload_hex": "4869"
+        }
+      ]
+    },
+    {
+      "id": "valid-demo-phrase",
+      "packet_hex": "01011234567800021A5370697269742C207768617420697320796F7572206E616D653FA4A6",
+      "expected_events": [
+        {
+          "v": 1,
+          "event": "message",
+          "session": "12345678",
+          "seq": 2,
+          "payload_hex": "5370697269742C207768617420697320796F7572206E616D653F"
+        }
+      ]
+    },
+    {
+      "id": "valid-max48",
+      "packet_hex": "010112345678FFFF30414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141ACC7",
+      "expected_events": [
+        {
+          "v": 1,
+          "event": "message",
+          "session": "12345678",
+          "seq": 65535,
+          "payload_hex": "414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141"
+        }
+      ]
+    },
+    {
+      "id": "checksum-failure",
+      "packet_hex": "0101123456780001024969DD79",
+      "symbols": [
+        {
+          "at_ms": 0,
+          "address_hex": "A700",
+          "command_hex": "01"
+        },
+        {
+          "at_ms": 120,
+          "address_hex": "A701",
+          "command_hex": "01"
+        },
+        {
+          "at_ms": 240,
+          "address_hex": "A702",
+          "command_hex": "12"
+        },
+        {
+          "at_ms": 360,
+          "address_hex": "A703",
+          "command_hex": "34"
+        },
+        {
+          "at_ms": 480,
+          "address_hex": "A704",
+          "command_hex": "56"
+        },
+        {
+          "at_ms": 600,
+          "address_hex": "A705",
+          "command_hex": "78"
+        },
+        {
+          "at_ms": 720,
+          "address_hex": "A706",
+          "command_hex": "00"
+        },
+        {
+          "at_ms": 840,
+          "address_hex": "A707",
+          "command_hex": "01"
+        },
+        {
+          "at_ms": 960,
+          "address_hex": "A708",
+          "command_hex": "02"
+        },
+        {
+          "at_ms": 1080,
+          "address_hex": "A709",
+          "command_hex": "49"
+        },
+        {
+          "at_ms": 1200,
+          "address_hex": "A70A",
+          "command_hex": "69"
+        },
+        {
+          "at_ms": 1320,
+          "address_hex": "A70B",
+          "command_hex": "DD"
+        },
+        {
+          "at_ms": 1440,
+          "address_hex": "A70C",
+          "command_hex": "79"
+        }
+      ],
+      "expected_events": [
+        {
+          "v": 1,
+          "event": "disturbance",
+          "code": "CHECKSUM_FAILED",
+          "reason": "CRC_MISMATCH",
+          "session": null,
+          "seq": null
+        }
+      ]
+    },
+    {
+      "id": "partial-timeout",
+      "symbols": [
+        {
+          "at_ms": 0,
+          "address_hex": "A700",
+          "command_hex": "01"
+        },
+        {
+          "at_ms": 120,
+          "address_hex": "A701",
+          "command_hex": "01"
+        },
+        {
+          "at_ms": 240,
+          "address_hex": "A702",
+          "command_hex": "12"
+        },
+        {
+          "at_ms": 360,
+          "address_hex": "A703",
+          "command_hex": "34"
+        },
+        {
+          "at_ms": 480,
+          "address_hex": "A704",
+          "command_hex": "56"
+        }
+      ],
+      "advance_to_ms": 980,
+      "expected_events": [
+        {
+          "v": 1,
+          "event": "disturbance",
+          "code": "INCOMPLETE_PACKET",
+          "reason": "INTER_SYMBOL_TIMEOUT",
+          "session": null,
+          "seq": null
+        }
+      ]
+    },
+    {
+      "id": "whole-packet-timeout",
+      "symbols": [
+        {
+          "at_ms": 0,
+          "address_hex": "A700",
+          "command_hex": "01"
+        },
+        {
+          "at_ms": 200,
+          "address_hex": "A701",
+          "command_hex": "01"
+        },
+        {
+          "at_ms": 400,
+          "address_hex": "A702",
+          "command_hex": "12"
+        },
+        {
+          "at_ms": 600,
+          "address_hex": "A703",
+          "command_hex": "34"
+        },
+        {
+          "at_ms": 800,
+          "address_hex": "A704",
+          "command_hex": "56"
+        },
+        {
+          "at_ms": 1000,
+          "address_hex": "A705",
+          "command_hex": "78"
+        },
+        {
+          "at_ms": 1200,
+          "address_hex": "A706",
+          "command_hex": "FF"
+        },
+        {
+          "at_ms": 1400,
+          "address_hex": "A707",
+          "command_hex": "FF"
+        },
+        {
+          "at_ms": 1600,
+          "address_hex": "A708",
+          "command_hex": "30"
+        },
+        {
+          "at_ms": 1800,
+          "address_hex": "A709",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 2000,
+          "address_hex": "A70A",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 2200,
+          "address_hex": "A70B",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 2400,
+          "address_hex": "A70C",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 2600,
+          "address_hex": "A70D",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 2800,
+          "address_hex": "A70E",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 3000,
+          "address_hex": "A70F",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 3200,
+          "address_hex": "A710",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 3400,
+          "address_hex": "A711",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 3600,
+          "address_hex": "A712",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 3800,
+          "address_hex": "A713",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 4000,
+          "address_hex": "A714",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 4200,
+          "address_hex": "A715",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 4400,
+          "address_hex": "A716",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 4600,
+          "address_hex": "A717",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 4800,
+          "address_hex": "A718",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 5000,
+          "address_hex": "A719",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 5200,
+          "address_hex": "A71A",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 5400,
+          "address_hex": "A71B",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 5600,
+          "address_hex": "A71C",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 5800,
+          "address_hex": "A71D",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 6000,
+          "address_hex": "A71E",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 6200,
+          "address_hex": "A71F",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 6400,
+          "address_hex": "A720",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 6600,
+          "address_hex": "A721",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 6800,
+          "address_hex": "A722",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 7000,
+          "address_hex": "A723",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 7200,
+          "address_hex": "A724",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 7400,
+          "address_hex": "A725",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 7600,
+          "address_hex": "A726",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 7800,
+          "address_hex": "A727",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 8000,
+          "address_hex": "A728",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 8200,
+          "address_hex": "A729",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 8400,
+          "address_hex": "A72A",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 8600,
+          "address_hex": "A72B",
+          "command_hex": "41"
+        },
+        {
+          "at_ms": 8800,
+          "address_hex": "A72C",
+          "command_hex": "41"
+        }
+      ],
+      "advance_to_ms": 9000,
+      "expected_events": [
+        {
+          "v": 1,
+          "event": "disturbance",
+          "code": "INCOMPLETE_PACKET",
+          "reason": "PACKET_TIMEOUT",
+          "session": null,
+          "seq": null
+        }
+      ],
+      "note": "Malformed slow sender: last accepted symbol at 8800, so only whole-packet timer has expired at 9000."
+    },
+    {
+      "id": "index-gap",
+      "symbols": [
+        {
+          "at_ms": 0,
+          "address_hex": "A700",
+          "command_hex": "01"
+        },
+        {
+          "at_ms": 120,
+          "address_hex": "A701",
+          "command_hex": "01"
+        },
+        {
+          "at_ms": 240,
+          "address_hex": "A702",
+          "command_hex": "12"
+        },
+        {
+          "at_ms": 480,
+          "address_hex": "A704",
+          "command_hex": "56"
+        },
+        {
+          "at_ms": 600,
+          "address_hex": "A705",
+          "command_hex": "78"
+        },
+        {
+          "at_ms": 720,
+          "address_hex": "A706",
+          "command_hex": "00"
+        },
+        {
+          "at_ms": 840,
+          "address_hex": "A707",
+          "command_hex": "01"
+        },
+        {
+          "at_ms": 960,
+          "address_hex": "A708",
+          "command_hex": "02"
+        },
+        {
+          "at_ms": 1080,
+          "address_hex": "A709",
+          "command_hex": "48"
+        },
+        {
+          "at_ms": 1200,
+          "address_hex": "A70A",
+          "command_hex": "69"
+        },
+        {
+          "at_ms": 1320,
+          "address_hex": "A70B",
+          "command_hex": "DD"
+        },
+        {
+          "at_ms": 1440,
+          "address_hex": "A70C",
+          "command_hex": "79"
+        }
+      ],
+      "expected_events": [
+        {
+          "v": 1,
+          "event": "disturbance",
+          "code": "INCOMPLETE_PACKET",
+          "reason": "INDEX_GAP",
+          "session": null,
+          "seq": null
+        }
+      ]
+    },
+    {
+      "id": "restart",
+      "symbols": [
+        {
+          "at_ms": 0,
+          "address_hex": "A700",
+          "command_hex": "01"
+        },
+        {
+          "at_ms": 120,
+          "address_hex": "A701",
+          "command_hex": "01"
+        },
+        {
+          "at_ms": 240,
+          "address_hex": "A702",
+          "command_hex": "12"
+        },
+        {
+          "at_ms": 360,
+          "address_hex": "A703",
+          "command_hex": "34"
+        },
+        {
+          "at_ms": 480,
+          "address_hex": "A704",
+          "command_hex": "56"
+        },
+        {
+          "at_ms": 600,
+          "address_hex": "A700",
+          "command_hex": "01"
+        },
+        {
+          "at_ms": 720,
+          "address_hex": "A701",
+          "command_hex": "01"
+        },
+        {
+          "at_ms": 840,
+          "address_hex": "A702",
+          "command_hex": "12"
+        },
+        {
+          "at_ms": 960,
+          "address_hex": "A703",
+          "command_hex": "34"
+        },
+        {
+          "at_ms": 1080,
+          "address_hex": "A704",
+          "command_hex": "56"
+        },
+        {
+          "at_ms": 1200,
+          "address_hex": "A705",
+          "command_hex": "78"
+        },
+        {
+          "at_ms": 1320,
+          "address_hex": "A706",
+          "command_hex": "00"
+        },
+        {
+          "at_ms": 1440,
+          "address_hex": "A707",
+          "command_hex": "01"
+        },
+        {
+          "at_ms": 1560,
+          "address_hex": "A708",
+          "command_hex": "02"
+        },
+        {
+          "at_ms": 1680,
+          "address_hex": "A709",
+          "command_hex": "48"
+        },
+        {
+          "at_ms": 1800,
+          "address_hex": "A70A",
+          "command_hex": "69"
+        },
+        {
+          "at_ms": 1920,
+          "address_hex": "A70B",
+          "command_hex": "DD"
+        },
+        {
+          "at_ms": 2040,
+          "address_hex": "A70C",
+          "command_hex": "79"
+        }
+      ],
+      "expected_events": [
+        {
+          "v": 1,
+          "event": "disturbance",
+          "code": "INCOMPLETE_PACKET",
+          "reason": "RESTART",
+          "session": null,
+          "seq": null
+        },
+        {
+          "v": 1,
+          "event": "message",
+          "session": "12345678",
+          "seq": 1,
+          "payload_hex": "4869"
+        }
+      ]
+    },
+    {
+      "id": "oversized-ir49",
+      "packet_hex": "01011234567800013141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141FB03",
+      "expected_events": [
+        {
+          "v": 1,
+          "event": "protocol_error",
+          "code": "INVALID_LENGTH"
+        }
+      ],
+      "note": "Reject at index 8; do not allocate/copy the declared payload."
+    },
+    {
+      "id": "unsupported-type",
+      "packet_hex": "01021234567800010248696CB6",
+      "expected_events": [
+        {
+          "v": 1,
+          "event": "protocol_error",
+          "code": "UNSUPPORTED_TYPE"
+        }
+      ]
+    },
+    {
+      "id": "invalid-text",
+      "packet_hex": "01011234567800010101B9F8",
+      "expected_events": [
+        {
+          "v": 1,
+          "event": "protocol_error",
+          "code": "INVALID_TEXT"
+        }
+      ]
+    },
+    {
+      "id": "duplicate",
+      "cache": {
+        "packet_hex": "0101123456780001024869DD79",
+        "age_ms_at_delivery": 3000
+      },
+      "packet_hex": "0101123456780001024869DD79",
+      "expected_events": [
+        {
+          "v": 1,
+          "event": "duplicate",
+          "session": "12345678",
+          "seq": 1
+        }
+      ]
+    },
+    {
+      "id": "id-conflict",
+      "cache": {
+        "packet_hex": "0101123456780001024869DD79",
+        "age_ms_at_delivery": 3000
+      },
+      "packet_hex": "010112345678000102486FBDBF",
+      "expected_events": [
+        {
+          "v": 1,
+          "event": "protocol_error",
+          "code": "ID_CONFLICT"
+        }
+      ]
+    },
+    {
+      "id": "dedup-expired",
+      "cache": {
+        "packet_hex": "0101123456780001024869DD79",
+        "age_ms_at_delivery": 60000
+      },
+      "packet_hex": "0101123456780001024869DD79",
+      "expected_events": [
+        {
+          "v": 1,
+          "event": "message",
+          "session": "12345678",
+          "seq": 1,
+          "payload_hex": "4869"
+        }
+      ]
+    },
+    {
+      "id": "total-loss-silence",
+      "symbols": [],
+      "advance_to_ms": 20000,
+      "expected_events": []
+    }
+  ],
+  "serial_cases": [
+    {
+      "id": "send-hi",
+      "role": "tx",
+      "line": "SEND\t12345678\t0001\t4869\n",
+      "expected": "accepted",
+      "packet_hex": "0101123456780001024869DD79"
+    },
+    {
+      "id": "send-max48",
+      "role": "tx",
+      "line": "SEND\t12345678\tFFFF\t414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141\n",
+      "expected": "accepted",
+      "packet_hex": "010112345678FFFF30414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141ACC7"
+    },
+    {
+      "id": "send-oversize49",
+      "role": "tx",
+      "line": "SEND\t12345678\t0001\t41414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141\n",
+      "expected": "INVALID_TEXT"
+    },
+    {
+      "id": "line-overflow",
+      "role": "tx",
+      "line": "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n",
+      "expected": "LINE_TOO_LONG"
+    },
+    {
+      "id": "odd-hex",
+      "role": "tx",
+      "line": "SEND\t12345678\t0001\t486\n",
+      "expected": "MALFORMED_COMMAND"
+    },
+    {
+      "id": "send-to-receiver",
+      "role": "rx",
+      "line": "SEND\t12345678\t0001\t4869\n",
+      "expected": "UNKNOWN_COMMAND"
+    },
+    {
+      "id": "split-and-multiple",
+      "role": "tx",
+      "chunks": [
+        "SEND\t1234",
+        "5678\t0001\t48",
+        "69\nHELLO\n"
+      ],
+      "expected_lines": [
+        "SEND\t12345678\t0001\t4869",
+        "HELLO"
+      ],
+      "note": "Line framing only. Hosts must not pipeline HELLO while SEND is busy."
+    },
+    {
+      "id": "recover-after-overflow",
+      "role": "tx",
+      "chunks": [
+        "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "\nHELLO\n"
+      ],
+      "expected": "LINE_TOO_LONG_THEN_HELLO",
+      "note": "Discard the whole overflowing line before processing HELLO."
+    }
+  ]
+}

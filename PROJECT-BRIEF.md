@@ -1,17 +1,20 @@
 # HackOrTreat project brief
 
+## Active delivery priority
+Follow the original three-person majors table. CS Major 1 owns offline Whisper microphone-to-text, a Python transcript CLI, and cleaned/bounded serial output; this is one of three independent workstreams, not the default for every teammate. CE owns all wiring/Arduino/IR work; CS Major 2 owns Laptop 2 serial/Qwen/TTS/visuals. WORKFLOW.md defines team ownership; sender/TASKS.md, firmware/TASKS.md, and receiver/TASKS.md are the separate live trackers. The team MVP comes before a shared desktop shell; no Electron/UI prerequisite for the sender. Actual compression remains unagreed; v1 uses bounded text and serial hex encoding, not a private compression codec.
+
 ## Goal and success
 Target Best Open-Source AI Project at Hacktoberfest Hack Day Lexington x Women in Data Science at UK with a theatrical, fully offline voice-to-IR demo. The published category requires an original project with substantive open-source/open-weight AI use. Read SOFTWARE-REQUIREMENTS.md for verified sources, software acceptance criteria, and unconfirmed organizer policies. The design aligns with the category description; full eligibility is not yet established. The supplied blueprint is the design source, not evidence that components have been installed or tested. The six-hour sprint is a planning constraint, not a verified delivery estimate.
 
 Minimum demonstrable system: speak into Laptop 1, show the offline transcription, transmit its text over a real one-way IR link, and display decoded plain text on Laptop 2. This hardware path is the first engineering milestone. Substantive local open-weight AI response generation is required for the final award-targeted demo; distorted speech, planchette animation, and ambiance follow the working path.
 
 ## Desktop product
-The final deliverable is a desktop app with a shared codebase and two selectable modes, one per laptop. A command-line-only demo is not the product target.
+The immediate sender deliverable is a simple Python CLI, integrated with the other two teammates through agreed serial contracts. A shared desktop app with sender/receiver modes remains a deferred product direction after the team MVP; it does not block CLI delivery or the team demo.
 
 ## Desktop UI and backend development
 - Living Plane: microphone controls/state, transcript display/editing, manual text input, serial port selection/connection state, send action, and local busy/error feedback. Do not claim remote delivery acknowledgement.
 - Spirit Plane: received plain text separate from generated response, connection and transport/error states, later Ouija board/planchette, and audio controls.
-- Build the minimal shell early against explicit local event/command contracts and visibly labeled mock adapters. Replace mocks incrementally with serial, speech, model, and audio services. Basic UI and backend develop together; decorative polish follows working real IR.
+- Deferred UI work: once the team MVP works, build the shell against agreed event/command contracts with clearly labeled mocks. Reuse working CLI/service modules; do not make shell implementation a dependency of sender or receiver CLI integration.
 - Include a collapsible diagnostic panel for events/timing and a readable presentation view for judges. Final rehearsal must use real inputs, not mocks.
 - Keep UI separate from hardware/process adapters. Cover disconnected, busy, cancelled, unavailable-model, and failed states. UI does not directly execute arbitrary commands or access serial/files; validate the service boundary.
 - Electron is provisional, not selected or installed. U01 confirms target OS, shell, UI/service boundary, local Python/audio/model process startup/shutdown, and packaging approach.
@@ -39,7 +42,7 @@ Proposed starting stack from the supplied blueprint:
 - STT: faster-whisper or whisper.cpp with tiny.en model files. Choose one in a small task after checking installation and offline startup.
 - LLM: preferred candidate Qwen2.5-1.5B-Instruct with a local Q4_K_M artifact where supported, proposed Ollama runtime. Its official model/GGUF pages declare Apache 2.0; the 3B variant has different license terms and is not interchangeable by assumption. T09 verifies the exact artifact, revision/digest, runtime identifier, license notices, and latency. Nothing has been downloaded or benchmarked yet.
 - Speech output: Piper with a local ONNX voice and its required configuration; optional Pedalboard effects. Verify voice and software licenses separately. Keep intelligibility and playback reliability ahead of heavy effects.
-- Desktop integration/UI: shared sender/receiver shell with local HTML/CSS/JS; proposed Node.js/serialport adapters and local Python speech worker. A Python sender CLI is a development aid only. Confirm framework and service lifecycle in U01; pin actual dependencies once selected.
+- Sender: Python CLI with offline Whisper and serial adapter. Receiver: proposed Node.js/serialport plus local model/audio/visuals under CS Major 2. A shared desktop shell is deferred; U01 may later decide framework and lifecycle. Pin only the dependencies needed by the selected workstream.
 - Firmware: proposed Arduino IDE/toolchain and IRremote. Verify feasible packet encoding, timing, and payload limits on the actual boards rather than assuming arbitrary strings are supported directly.
 - Assets: locally stored board background, transparent planchette, ambient drone, fonts, and all associated license/source records. No CDN or streamed media.
 
@@ -63,7 +66,7 @@ The final acceptance test starts both apps from a fresh process with Wi-Fi disab
 Keep exact dependency/model versions, license/source records, install/preload instructions, and startup commands. Do not commit large model artifacts or secrets without an explicit storage plan. Open weights do not automatically mean a model or voice meets the hackathon's award rules.
 
 ## Human roles and six-hour planning envelope
-CE teammate owns wiring, board compatibility, IR firmware, real transport throughput/reliability, and interruption recovery. CS teammate 1 owns offline STT, sender desktop mode and speech adapter, and paced USB serial output. CS teammate 2 owns receiver events/plain-text display, local Qwen, speech/effects, and Ouija UI. One coordinator owns protocol contracts and integration. These human assignments are not automatic authorization to spawn software agents.
+CE teammate owns wiring, board compatibility, IR firmware, real transport throughput/reliability, and interruption recovery. CS teammate 1 owns offline STT, the sender Python CLI, text cleanup/bounds, and paced USB serial output. CS teammate 2 owns receiver events/plain-text display, local Qwen, speech/effects, and Ouija UI. One coordinator owns protocol contracts and integration. These human assignments are not automatic authorization to spawn software agents.
 
 Within six hours, prioritize contract and smoke tests, then plain-text IR, then offline speech input and local AI output, then theater and rehearsal. Drop decorative effects or animation polish before compromising offline operation or the real transport path. Use TASKS.md for individual prompts and dependencies. Do not execute the full sprint in one request.
 
