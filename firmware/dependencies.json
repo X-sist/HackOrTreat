@@ -1,8 +1,15 @@
 {
-  "status": "unconfigured",
+  "status": "configured",
   "fqbn": "arduino:avr:uno",
-  "arduino_cli": null,
-  "avr_core": null,
-  "libraries": [],
-  "note": "CE pins exact tooling/core/libraries in T04; no sketch or compiler installed by this setup."
+  "arduino_cli": "1.5.1",
+  "arduino_cli_sha256_windows_x64": "fabe42e0eb04d00e776a66178299ff95a46c623dbc260f997e58fd514853dd40",
+  "avr_core": "1.8.8",
+  "libraries": [
+    {
+      "name": "IRremote",
+      "version": "4.7.1"
+    }
+  ],
+  "tx_data_pin": 2,
+  "tx_data_pin_source": "user-confirmed"
 }
